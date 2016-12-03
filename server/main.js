@@ -31,6 +31,7 @@ console.log("Message: " + rawMessage.toString());
 //     topic: subscribedTopic.toString(),
 //     message: rawMessage.toString() });
 // });
+
  })
 });
 
