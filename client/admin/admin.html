@@ -1,30 +1,59 @@
 <template name= "admin">
-  <head>
-    <title>IsarSitze - Admin Panel</title>
-  </head>
+    <head>
+        <title>IsarSitze - Admin Panel</title>
+    </head>
 
-  <body>
-    <h1>Welcome to IsarSitze - Admin Panel!</h1>
+    <body>
+        <h1>Welcome to IsarSitze - Admin Panel!</h1>
 
-    <!--Just For Reference-->
-    <!--{{> hello}}-->
-    <!--{{> info}}-->
-  </body>
+        <h2>TransportVehicles</h2>
+        <!--Display All Vehicles-->
+        <ul>
+            {{#each vehicles}}
+                {{> vehicle}}
+            {{/each}}
+        </ul>
+
+        <!--Delete All Vehicles-->
+        <input type="button" value="Remove Vehicles" id="removeAllVehicles"/>
+
+        <p> Note: Raspberries will be deleted along with the transport </p>
+
+        <!--Add new Vehicle-->
+        <form class="addVehicle">
+            <input type="text" name="vehicleId" placeholder="Add Vehicle"/>
+            <input type="submit"/>
+        </form>
+
+        <h2>Vehicle Raspberries</h2>
+        <!--Display All Raspberries-->
+        <ul>
+            {{#each respberries}}
+                {{> respberry}}
+            {{/each}}
+        </ul>
+
+        <!--Add new Respberry-->
+        <form class="addRaspberry">
+            <input type="text" name="respberryId" placeholder="Add Respberry"/>
+            <br/>
+            {{#each vehicles}}
+                {{> raspberryBelongsTo}}
+            {{/each}}
+            <input type="submit"/>
+        </form>
+
+    </body>
 </template>
 
-<!--Just For Reference-->
-<template name="hello">
-    <button>Click Me</button>
-    <p>You've pressed the button {{counter}} times.</p>
+<template name="vehicle">
+    <li>{{text}}</li>
 </template>
 
-<!--Just For Reference-->
-<template name="info">
-    <h2>Learn Meteor!</h2>
-    <ul>
-      <li><a href="https://www.meteor.com/try" target="_blank">Do the Tutorial</a></li>
-      <li><a href="http://guide.meteor.com" target="_blank">Follow the Guide</a></li>
-      <li><a href="https://docs.meteor.com" target="_blank">Read the Docs</a></li>
-      <li><a href="https://forums.meteor.com" target="_blank">Discussions</a></li>
-    </ul>
+<template name="respberry">
+    <li>{{name}}: {{belongsTo}}</li>
+</template>
+
+<template name="raspberryBelongsTo">
+    <input type="radio" name="raspberryBelongsTo" data-answer="{{ text }}"> {{ text }}<br/>
 </template>
