@@ -1,4 +1,3 @@
-import "../main.js";
 
 Router.route('/', function () {
   this.render('public');
