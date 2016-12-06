@@ -36,5 +36,6 @@ Meteor.methods({
             name: name,
             belongsTo: belongsTo
         });
+        subscribeToMQTT(name, belongsTo);
     }
 });
