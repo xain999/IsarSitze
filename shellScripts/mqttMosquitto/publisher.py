@@ -1,7 +1,9 @@
+# publisher.py
+
 # TODO: Create an MQTT Publisher in Python
 
 import paho.mqtt.client as mqtt
-
+from pymongo import MongoClient
 # The callback for when the client receives a CONNACK response from the server.
 def onConnect(client, userdata, flags, rc):
     print("Connected with result code "+str(rc))
@@ -14,19 +16,31 @@ def onConnect(client, userdata, flags, rc):
 def onMessage(client, userdata, msg):
     print msg.topic + " " + str(msg.payload)
 
-client = mqtt.Client()
-client.on_connect = onConnect
-client.on_message = onMessage
+mqttClient = mqtt.Client()
+mqttClient.on_connect = onConnect
+mqttClient.on_message = onMessage
 
-client.connect("127.0.0.1:3001/meteor")
-
+mqttClient.connect("localhost")
 #mqtt.loop_start()
 
-topics = [line.rstrip('\n') for line in open('topics.txt')]
+mongoClient = MongoClient('mongodb://127.0.0.1:3001/meteor')
 
-for topic in topics:
-    print topic
-    client.publish(topic, "Hello From Python!")
+print mongoClient.database_names()
+VehiclesDB = mongoClient.meteor.transportVehicles
+
+
+RespDB = mongoClient.meteor.respberries
+
+for item in VehiclesDB.find():
+    print item
+
+for item in RespDB.find():
+    print item
+    topic = '/' + item['belongsTo'] + '/' + item['name']
+    mqttClient.publish(topic, "Hello From Python!")
+
+print "done"
+
 
 # while True:
 #     temperature = sensor.blocking_read()
