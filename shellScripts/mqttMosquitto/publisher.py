@@ -18,7 +18,7 @@ client = mqtt.Client()
 client.on_connect = onConnect
 client.on_message = onMessage
 
-client.connect("localhost")
+client.connect("127.0.0.1:3001/meteor")
 
 #mqtt.loop_start()
 
