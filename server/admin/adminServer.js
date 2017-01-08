@@ -9,8 +9,12 @@ Meteor.methods({
     'transportVehicles.getAll'() {
         return TransportVehicles.find({});
     },
-    'transportVehicles.insert'(text) {
-        check(text, String);
+    'transportVehicles.insert'(vehicleId, type, respberryId) {
+        check(vehicleId, String);
+        check(type, String);
+        //check(respberryID, [String]);
+        check(respberryId, String);
+
  
         // TODO: UPDATE AFTER ADDING SECURITY
         // Make sure the user is logged in before inserting a task
@@ -19,7 +23,9 @@ Meteor.methods({
         // }
  
         TransportVehicles.insert({
-            text: text,
+            vehicleId: vehicleId,
+            type: type,
+            respberryId: respberryId,
             createdAt: new Date(),
         });
     },
@@ -31,11 +37,11 @@ Meteor.methods({
 
     /////////// Respberry Functions \\\\\\\\\\\\\\
 
-    'respberries.insert'(name, belongsTo) {
+    'respberries.insert'(respberryId, belongsTo) {
         Respberries.insert({
-            name: name,
+            respberryId: respberryId,
             belongsTo: belongsTo
         });
-        subscribeToMQTT(name, belongsTo);
+        subscribeToMQTT(respberryId, belongsTo);
     }
 });

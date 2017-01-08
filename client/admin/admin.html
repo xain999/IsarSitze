@@ -6,7 +6,8 @@
     <body>
         <h1>Welcome to IsarSitze - Admin Panel!</h1>
 
-        <h2>TransportVehicles</h2>
+        <h2>TransportVehicles- Display</h2>
+        <p> Format <br/> <b> vechicleId:type:respberryid </b> </p>
         <!--Display All Vehicles-->
         <ul>
             {{#each vehicles}}
@@ -21,7 +22,15 @@
 
         <!--Add new Vehicle-->
         <form class="addVehicle">
-            <input type="text" name="vehicleId" placeholder="Add Vehicle"/>
+            <input type="text" name="vehicleId" placeholder="Add Vehicle ID"/><br/>
+            <!--TODO: ADD ENUMERATION-->
+            <input type="radio" name="type" value="bus"> bus 
+            <input type="radio" name="type" value="train"> train
+            <input type="radio" name="type" value="tram"> tram <br/>
+            <input type="button" id="addRespberryButton" value="Add respberry">                         <input type="text" name="respberryId" placeholder="Add Respberry ID"/><br/>
+            
+            {{Add}}
+            
             <input type="submit"/>
         </form>
 
@@ -47,13 +56,17 @@
 </template>
 
 <template name="vehicle">
-    <li>{{text}}</li>
+    <li>{{vehicleId}} : {{type}} : {{respberryId}}</li>
 </template>
 
 <template name="respberry">
-    <li>{{name}}: {{belongsTo}}</li>
+    <li>{{respberryId}}: {{belongsTo}}</li>
 </template>
 
 <template name="raspberryBelongsTo">
-    <input type="radio" name="raspberryBelongsTo" data-answer="{{ text }}"> {{ text }}<br/>
+    <input type="radio" name="raspberryBelongsTo" data-answer="{{ text }}"> {{ vehicleId }}<br/>
+</template>
+
+<template name="Add">
+     <input type="text" name="respberryId" placeholder="Add Respberry ID"/><br/>
 </template>
