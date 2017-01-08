@@ -27,10 +27,16 @@ Template.admin.events({
         const target = event.target;
         const vehicleId = target.vehicleId.value;
         const type = target.type.value;
-        const respberryId = target.respberryId.value;
-    
+
+        var inputs, index, list=[];
+        inputs = document.getElementsByName('respberryId');
+        for (index = 0; index < inputs.length; ++index) {
+            list.push(inputs[index].value); 
+        }
+
+        console.log("list:" + list);
         // Insert a transportVehicle into the collection by calling serverSide method
-        Meteor.call('transportVehicles.insert', vehicleId, type, respberryId);
+        //Meteor.call('transportVehicles.insert', vehicleId, type, respberryId);
     
         // Clear form
         target.vehicleId.value = '';
@@ -40,13 +46,8 @@ Template.admin.events({
     'click #removeAllVehicles'(event) {
         Meteor.call('transportVehicles.removeAll');
     },
-    'click #addRespberryButton'(event){
-      console.log("addRespberryButton called");
-      Blaze.render(function(){
-      return Template.Add;
-      }, ".addVechicle"
-      );
-
+    'click #addRespberryButton':function(){
+        Blaze.render(Template.Add, $("#addVehicleDiv")[0]);
     },
     'submit .addRaspberry'(event) {
         // Prevent default browser form submit

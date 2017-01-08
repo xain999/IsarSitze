@@ -27,10 +27,12 @@
             <input type="radio" name="type" value="bus"> bus 
             <input type="radio" name="type" value="train"> train
             <input type="radio" name="type" value="tram"> tram <br/>
-            <input type="button" id="addRespberryButton" value="Add respberry">                         <input type="text" name="respberryId" placeholder="Add Respberry ID"/><br/>
+            <input type="button" id="addRespberryButton" value="Add respberry">                         
             
-            {{Add}}
-            
+            <div id="addVehicleDiv" name="addVehicleDiv">
+                {{>Add}}
+            </div>
+
             <input type="submit"/>
         </form>
 
@@ -68,5 +70,5 @@
 </template>
 
 <template name="Add">
-     <input type="text" name="respberryId" placeholder="Add Respberry ID"/><br/>
+     <input type="text" name="respberryId" id="respberryId" placeholder="Add Respberry ID"/><br/>
 </template>
