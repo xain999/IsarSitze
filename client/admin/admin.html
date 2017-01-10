@@ -37,37 +37,11 @@
             <input type="submit"/>
         </form>
 
-        <h2>Vehicle Raspberries</h2>
-        <!--Display All Raspberries-->
-        <ul>
-            {{#each respberries}}
-                {{> respberry}}
-            {{/each}}
-        </ul>
-
-        <!--Add new Respberry-->
-        <form class="addRaspberry">
-            <input type="text" name="respberryId" placeholder="Add Respberry"/>
-            <br/>
-            {{#each vehicles}}
-                {{> raspberryBelongsTo}}
-            {{/each}}
-            <input type="submit"/>
-        </form>
-
     </body>
 </template>
 
 <template name="vehicle">
     <li>{{vehicleId}} : {{type}} : {{respberryIds}}</li>
-</template>
-
-<template name="respberry">
-    <li>{{respberryId}}: {{belongsTo}}</li>
-</template>
-
-<template name="raspberryBelongsTo">
-    <input type="radio" name="raspberryBelongsTo" data-answer="{{ text }}"> {{ vehicleId }}<br/>
 </template>
 
 <template name="addRespberryTemplate">

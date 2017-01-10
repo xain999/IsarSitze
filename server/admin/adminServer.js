@@ -5,7 +5,6 @@ import { TransportVehicles, Respberries } from '../../database/collections.js';
 Meteor.methods({
     /////////// TransportVehicles Functions \\\\\\\\\\\\
 
-    // TODO: DOESN'T WORK
     'transportVehicles.getAll'() {
         return TransportVehicles.find({});
     },
@@ -30,16 +29,6 @@ Meteor.methods({
     'transportVehicles.removeAll'() {
         //TODO: UPDATE AFTER ADDING SECURITY
         TransportVehicles.remove({});
-        Respberries.remove({});
-    },
-
-    /////////// Respberry Functions \\\\\\\\\\\\\\
-
-    'respberries.insert'(respberryId, belongsTo) {
-        Respberries.insert({
-            respberryId: respberryId,
-            belongsTo: belongsTo
-        });
-        subscribeToMQTT(respberryId, belongsTo);
+        //Respberries.remove({});
     }
 });
