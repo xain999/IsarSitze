@@ -30,5 +30,13 @@ Meteor.methods({
         //TODO: UPDATE AFTER ADDING SECURITY
         TransportVehicles.remove({});
         //Respberries.remove({});
+    },
+    'transportVehicles.remove'(vehicleId){
+        TransportVehicles.remove({vehicleId:vehicleId});
+    },
+    'transportVehicles.fetch'(vehicleId){
+        var fetch = TransportVehicles.findOne({vehicleId:vehicleId});
+        console.log(fetch.vehicleId);
+        return fetch;
     }
 });
