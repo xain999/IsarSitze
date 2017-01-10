@@ -9,12 +9,10 @@ Meteor.methods({
     'transportVehicles.getAll'() {
         return TransportVehicles.find({});
     },
-    'transportVehicles.insert'(vehicleId, type, respberryId) {
+    'transportVehicles.insert'(vehicleId, type, respberryIds) {
         check(vehicleId, String);
         check(type, String);
-        //check(respberryID, [String]);
-        check(respberryId, String);
-
+        check(respberryIds, [String]);
  
         // TODO: UPDATE AFTER ADDING SECURITY
         // Make sure the user is logged in before inserting a task
@@ -25,7 +23,7 @@ Meteor.methods({
         TransportVehicles.insert({
             vehicleId: vehicleId,
             type: type,
-            respberryId: respberryId,
+            respberryIds: respberryIds,
             createdAt: new Date(),
         });
     },

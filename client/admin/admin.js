@@ -28,26 +28,28 @@ Template.admin.events({
         const vehicleId = target.vehicleId.value;
         const type = target.type.value;
 
-        var inputs, index, list=[];
+        // Get list of respberryIds
+        var inputs, index, respberryIds=[];
         inputs = document.getElementsByName('respberryId');
         for (index = 0; index < inputs.length; ++index) {
-            list.push(inputs[index].value); 
+            respberryIds.push(inputs[index].value); 
         }
 
-        console.log("list:" + list);
         // Insert a transportVehicle into the collection by calling serverSide method
-        //Meteor.call('transportVehicles.insert', vehicleId, type, respberryId);
+        Meteor.call('transportVehicles.insert', vehicleId, type, respberryIds);
     
         // Clear form
         target.vehicleId.value = '';
         target.type.value.unchecked;
-        target.respberryId.value = '';
+        for (index = 0; index < inputs.length; ++index) {
+            inputs[index].value = ''; 
+        }
     },
     'click #removeAllVehicles'(event) {
         Meteor.call('transportVehicles.removeAll');
     },
     'click #addRespberryButton':function(){
-        Blaze.render(Template.Add, $("#addVehicleDiv")[0]);
+        Blaze.render(Template.addRespberryTemplate, $("#addVehicleDiv")[0]);
     },
     'submit .addRaspberry'(event) {
         // Prevent default browser form submit

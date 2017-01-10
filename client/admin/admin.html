@@ -7,7 +7,8 @@
         <h1>Welcome to IsarSitze - Admin Panel!</h1>
 
         <h2>TransportVehicles- Display</h2>
-        <p> Format <br/> <b> vechicleId:type:respberryid </b> </p>
+        <p> Format <br/> <b> vechicleId:type:respberryids </b> </p>
+        
         <!--Display All Vehicles-->
         <ul>
             {{#each vehicles}}
@@ -30,7 +31,7 @@
             <input type="button" id="addRespberryButton" value="Add respberry">                         
             
             <div id="addVehicleDiv" name="addVehicleDiv">
-                {{>Add}}
+                {{>addRespberryTemplate}}
             </div>
 
             <input type="submit"/>
@@ -58,7 +59,7 @@
 </template>
 
 <template name="vehicle">
-    <li>{{vehicleId}} : {{type}} : {{respberryId}}</li>
+    <li>{{vehicleId}} : {{type}} : {{respberryIds}}</li>
 </template>
 
 <template name="respberry">
@@ -69,6 +70,6 @@
     <input type="radio" name="raspberryBelongsTo" data-answer="{{ text }}"> {{ vehicleId }}<br/>
 </template>
 
-<template name="Add">
+<template name="addRespberryTemplate">
      <input type="text" name="respberryId" id="respberryId" placeholder="Add Respberry ID"/><br/>
 </template>
