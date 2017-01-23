@@ -5,12 +5,13 @@ import { TransportVehicles, Respberries } from '../../database/collections.js';
 Meteor.methods({
     /////////// TransportVehicles Functions \\\\\\\\\\\\
 
-    // TODO: DOESN'T WORK
     'transportVehicles.getAll'() {
         return TransportVehicles.find({});
     },
-    'transportVehicles.insert'(text) {
-        check(text, String);
+    'transportVehicles.insert'(vehicleId, type, respberryIds) {
+        check(vehicleId, String);
+        check(type, String);
+        check(respberryIds, [String]);
  
         // TODO: UPDATE AFTER ADDING SECURITY
         // Make sure the user is logged in before inserting a task
@@ -19,23 +20,23 @@ Meteor.methods({
         // }
  
         TransportVehicles.insert({
-            text: text,
+            vehicleId: vehicleId,
+            type: type,
+            respberryIds: respberryIds,
             createdAt: new Date(),
         });
     },
     'transportVehicles.removeAll'() {
         //TODO: UPDATE AFTER ADDING SECURITY
         TransportVehicles.remove({});
-        Respberries.remove({});
+        //Respberries.remove({});
     },
-
-    /////////// Respberry Functions \\\\\\\\\\\\\\
-
-    'respberries.insert'(name, belongsTo) {
-        Respberries.insert({
-            name: name,
-            belongsTo: belongsTo
-        });
-        subscribeToMQTT(name, belongsTo);
+    'transportVehicles.remove'(vehicleId){
+        TransportVehicles.remove({vehicleId:vehicleId});
+    },
+    'transportVehicles.fetch'(vehicleId){
+        var fetch = TransportVehicles.findOne({vehicleId:vehicleId});
+        console.log(fetch.vehicleId);
+        return fetch;
     }
 });
