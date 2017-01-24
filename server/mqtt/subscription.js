@@ -1,8 +1,10 @@
-import { TransportVehicles, Respberries } from '../../database/collections.js';
+import { TransportVehicles, Respberries, SeatsData } from '../../database/collections.js';
+
+// Require fiber
+Fiber = Npm.require('fibers');
 
 // Turn this Flag off in debuggin if needed
 const USE_MQTT = true;
-const EXPORT_OUTPUT_TOPICS = true;
 
 // TODO: Move this to a universal place
 Fiber = Npm.require('fibers');
@@ -22,11 +24,14 @@ startMQTT = function() {
         mqttClient  = mqtt.connect('mqtt://localhost');
     }
 
+    // 
     mqttClient.on('connect', function () {
         Fiber(function() {
-            result = Respberries.find().forEach(function(element) {
+            result = TransportVehicles.find().forEach(function(element) {
                 
-                subscribeToMQTT(element["name"], element["belongsTo"]);
+                element['respberryIds'].forEach(function(resp) {
+                    subscribeToMQTT(resp, element["vehicleId"]);
+                }, this);
             });
         }).run();
         
@@ -35,27 +40,28 @@ startMQTT = function() {
 
     console.log("App Started");
 
-    //Falls eine Nachricht ankommt, in DataBase abspeichern
+    //Saving the Data on arrival
     mqttClient.on('message', function (subscribedTopic, rawMessage) {
 
-    console.log("Subscription: " + subscribedTopic);
-    console.log("Message: " + rawMessage.toString());
-    // var d = new Date();
-    // var t = d.getTime();
+        message = JSON.parse(rawMessage.toString());
 
-    //Fiber = Npm.require('fibers');
-    // Fiber(function() {
-    //   RawMessagesList.insert({
-    //     created_at: new Date(),
-    //     received: t.toString(),
-    //     topic: subscribedTopic.toString(),
-    //     message: rawMessage.toString() });
-    // });
+        vehicleId = message['vehicleId'];
+        respId = message['respId'];
+        seatId = message['seatId'];
+        seatStatus = message['status'];
 
- });
+        console.log("Subscription: " + subscribedTopic);
+        console.log("Seat: " + seatId + '\t' + seatStatus);
+
+        Fiber(function() {
+            SeatsData.insert({
+                url: subscribedTopic,
+                vehicleId: vehicleId,
+                respberryId: respId,
+                seatId: seatId,
+                seatStatus: seatStatus,
+                createdAt: new Date()
+            });
+        }).run();
+    });
 }
-
-//shared collection
-//Messages = new Meteor.Collection("messages");
-//serverside mqtt in-stream
-//Messages.mqttConnect("mqtt://localhost:1883", ["topic"], {insert: bool});
