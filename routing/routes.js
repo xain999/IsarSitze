@@ -16,4 +16,4 @@ Router.route('/admin', function () {
 
 // defined in ../server/resp/respServer.js
 Router.route('/resp/settings/', { where: "server" }).post(getAllSettings);
-Router.route('/resp/seats/', { where: "server" }).post(updateSeats);
+Router.route('/resp/seats/', { where: "server" }).put(updateSeats).post(getSeats);

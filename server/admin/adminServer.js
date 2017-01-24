@@ -19,6 +19,7 @@ Meteor.methods({
         //   throw new Meteor.Error('not-authorized');
         // }
  
+        // TODO: ALSO NEED TO UPDATE MQTT RECEIVER
         TransportVehicles.insert({
             vehicleId: vehicleId,
             type: type,
