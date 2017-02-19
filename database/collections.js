@@ -20,6 +20,7 @@ export const SeatsInfo = new Mongo.Collection('seatsInfo');
 // 'transportId: ---'
 // 'respId: ---'
 // 'seatId: ---'
+// 'seatStatus: ---'
 // 'time: ---'
 export const SeatsData = new Mongo.Collection('seatsData'); 
 

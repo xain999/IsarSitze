@@ -1,3 +1,0 @@
-/wagon1/resp1
-/wagon1/resp2
-/wagon2/resp3
