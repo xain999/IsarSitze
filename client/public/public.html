@@ -33,8 +33,7 @@
       <td> {{vehicleId}} </td>
       <td> {{respberryId}} </td>
       <td> {{seatId}} </td>
-      <!-- TODO: FIX FALSE NOT DISPLAYING ERROR -->
-      <td> {{seatStatus}} </td>
+      <td> {{#if seatStatus}} Occupied {{else}} Free {{/if}} </td>
       <td> {{createdAt}} </td>
       <td> {{url}} </td>
     </tr>

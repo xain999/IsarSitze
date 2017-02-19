@@ -36,15 +36,11 @@ updateSeats = function() {
     // }
 
     resp = {
-        'vehicleId': this.request.body['vehicleId'],
-        'respberryId': this.request.body['respId']
+        'vehicleId': vehicleId,
+        'respberryId': respId
     }
 
-    old = SeatsInfo.findOne(resp);
-
-    if (old != null) {
-        SeatsInfo.remove(old);
-    }
+    SeatsInfo.remove(resp);
 
     SeatsInfo.insert({
             vehicleId: vehicleId,
@@ -80,6 +76,6 @@ getSeats = function() {
     result = JSON.stringify(SeatsInfo.findOne(resp));
     console.log (result);
     if (result == null)
-    result = '{}'
+        result = '{}'
     this.response.end(result);
 }
