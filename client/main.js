@@ -1,7 +1,8 @@
 import { Template } from 'meteor/templating';
 import { ReactiveVar } from 'meteor/reactive-var';
 
-import './public/public.js';
+// import './public/public.js';
+// import './admin/admin.js';
 
 import './main.html';
 

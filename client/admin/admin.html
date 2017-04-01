@@ -1,30 +1,63 @@
 <template name= "admin">
-  <head>
-    <title>IsarSitze - Admin Panel</title>
-  </head>
+    <head>
+        <title>IsarSitze - Admin Panel</title>
+    </head>
 
-  <body>
-    <h1>Welcome to IsarSitze - Admin Panel!</h1>
+    <body>
+        <h1>Welcome to IsarSitze - Admin Panel!</h1>
+        
+        <!--Display All Vehicles-->
+        <h2>TransportVehicles- Display</h2>
+        <p> Format <br/> <b> vechicleId:type:respberryids </b> </p>
+        <ul>
+            {{#each vehicles}}
+                {{> vehicle}}
+            {{/each}}
+        </ul>
 
-    <!--Just For Reference-->
-    <!--{{> hello}}-->
-    <!--{{> info}}-->
-  </body>
+        <!--Delete All Vehicles-->
+        <h2>TransportVehicles- Remove All Vehicles</h2>
+        <p> Note: Raspberries will be deleted along with the transport </p>
+        <input type="button" value="Remove All Vehicles" id="removeAllVehicles"/>
+
+        <!--Delete Specific Vehicles-->
+        <h2>TransportVehicles- Remove Specific Vehicle</h2>
+        <p> Note: Raspberries will be deleted along with the transport </p>
+        <form class="deleteSpecificVehicleForm">
+            <b> Enter Vehicle ID </b>
+            <input type="text" name="vehicleId" placeholder="Vehicle ID"/> <br/>
+            <input type="submit" value="Remove this Vehicles"/>
+        </form>
+
+        <!--Add/Update Vehicle-->
+        <h2>TransportVehicles- Add/Update Vehicle</h2>
+        <form class="addVehicle">
+            <b> Vehicle ID </b>
+            <input type="text" name="vehicleId" placeholder="Add Vehicle ID"/> 
+            <input type="submit" id="updateVehicle" value="Update"><br/>
+            <!--TODO: ADD ENUMERATION-->
+            <b> Choose Vechicle Type:</b>
+            <input type="radio" name="type" value="bus"> bus 
+            <input type="radio" name="type" value="train"> train
+            <input type="radio" name="type" value="tram"> tram <br/>
+            
+            <b> Add Respberry ID that are installed in the vehicle</b>
+            <div id="addVehicleDiv" name="addVehicleDiv">
+                {{>addRespberryTemplate}}
+            </div>
+            <input type="button" id="addRespberryButton" value="Add respberry"><br/>                         
+
+            <input type="submit" id="addVehicle" value="Add"/>
+        </form>
+
+
+    </body>
 </template>
 
-<!--Just For Reference-->
-<template name="hello">
-    <button>Click Me</button>
-    <p>You've pressed the button {{counter}} times.</p>
+<template name="vehicle">
+    <li>{{vehicleId}} : {{type}} : {{respberryIds}}</li>
 </template>
 
-<!--Just For Reference-->
-<template name="info">
-    <h2>Learn Meteor!</h2>
-    <ul>
-      <li><a href="https://www.meteor.com/try" target="_blank">Do the Tutorial</a></li>
-      <li><a href="http://guide.meteor.com" target="_blank">Follow the Guide</a></li>
-      <li><a href="https://docs.meteor.com" target="_blank">Read the Docs</a></li>
-      <li><a href="https://forums.meteor.com" target="_blank">Discussions</a></li>
-    </ul>
+<template name="addRespberryTemplate">
+     <input type="text" name="respberryId" id="respberryId" placeholder="Add Respberry ID"/><br/>
 </template>
