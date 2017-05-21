@@ -1,7 +1,12 @@
 
+Router.route('/live', function () {
+  this.render('live');
+  startLive();
+});
+
 Router.route('/', function () {
-  this.render('public');
-  startPublic();
+  this.render('live');
+  startLive();
 });
 
 Router.route('/public', function () {
@@ -14,6 +19,12 @@ Router.route('/admin', function () {
   startAdmin();
 });
 
-// defined in ../server/resp/respServer.js
-Router.route('/resp/settings/', { where: "server" }).post(getAllSettings);
-Router.route('/resp/seats/', { where: "server" }).put(updateSeats).post(getSeats);
+Router.plugin('ensureSignedIn', {
+    only: ['admin']
+});
+
+if (Meteor.isServer) {
+  // defined in ../server/rasp/raspServer.js
+  Router.route('/rasp/settings/', { where: "server" }).post(getAllSettings);
+  Router.route('/rasp/seats/', { where: "server" }).put(updateSeats).post(getSeats);
+}

@@ -1,5 +1,5 @@
 """
-Python script to mock Respberry behavior
+Python script to mock Raspberry behavior
 """
 
 import json
@@ -30,12 +30,12 @@ def onMessage(client, userdata, msg):
 
 """
 """
-def getSeats(resp):
-    data = {'respId': resp[0], 'vehicleId': resp[1], 'password': 'password'}
+def getSeats(rasp):
+    data = {'raspId': rasp[0], 'vehicleId': rasp[1], 'pwd': rasp[2]}
     data_json = json.dumps(data)
     headers = {'Content-type': 'application/json'}
 
-    response = requests.post(WEB_ADDRESS + '/resp/seats', data=data_json, headers=headers)
+    response = requests.post(WEB_ADDRESS + '/rasp/seats', data=data_json, headers=headers)
 
     pprint(response.json())
 
@@ -46,16 +46,16 @@ def getSeats(resp):
 
 """
 """
-def updateSeats(resp, seats):
-    data = {'respId': resp[0], 'vehicleId': resp[1], 'password': 'password', 'seats': seats}
+def updateSeats(rasp, seats):
+    data = {'raspId': rasp[0], 'vehicleId': rasp[1], 'pwd': rasp[2], 'seats': seats}
     data_json = json.dumps(data)
     headers = {'Content-type': 'application/json'}
 
-    response = requests.put(WEB_ADDRESS + '/resp/seats', data=data_json, headers=headers)
+    response = requests.put(WEB_ADDRESS + '/rasp/seats', data=data_json, headers=headers)
     pprint(response.json())
 
-def changeSeatStatus(resp, seat, url, status):
-    data = {'respId': resp[0], 'vehicleId': resp[1], 'password': 'password', 'seatId': seat, 'status': status} 
+def changeSeatStatus(rasp, seat, url, status):
+    data = {'raspId': rasp[0], 'vehicleId': rasp[1], 'pwd': rasp[2], 'seatId': seat, 'status': status} 
     data_json = json.dumps(data)
     mqttClient.publish(url, data_json)
 
@@ -71,23 +71,28 @@ mongoClient = MongoClient('mongodb://127.0.0.1:3001/meteor')
 
 print (mongoClient.database_names())
 VehiclesDB = mongoClient.meteor.transportVehicles
+RaspberriesDB = mongoClient.meteor.raspberries
 
 urls = []
-respberries = []
+raspberries = []
 seats = []
 seatStatus = {}
 timeDuration = 1
 
 for item in VehiclesDB.find():
-    for resp in item['respberryIds']:
-        urls.append('/' + item['vehicleId'] + '/' + resp)
-        respberries.append((resp, item['vehicleId']))
+    for rasp in item['raspberryIds']:
+        urls.append('/' + item['vehicleId'] + '/' + rasp)
+        pwd = RaspberriesDB.find_one({'id': rasp, 'belongsTo': item['vehicleId']})
+        raspberries.append((rasp, item['vehicleId'], pwd['pwd']))
 
-        gotSeats = getSeats((resp, item['vehicleId']))
-        seats.append(gotSeats)
+        gotSeats = getSeats((rasp, item['vehicleId'], pwd['pwd']))
 
+        newSeats = []
         for seat in gotSeats:
-            seatStatus[seat] = False
+            seatStatus[int(seat['id'])] = seat['status']
+            newSeats.append(seat['id'])
+
+        seats.append(newSeats)
 
 while True:
 
@@ -112,14 +117,14 @@ while True:
 
         while choice > 0:
             url = random.randint(0, len(urls) - 1)
-            resp = respberries[url]
+            resp = raspberries[url]
             seat = seats[url][random.randint(0, len(seats[url]) - 1)]
             seatStatus[seat] = not seatStatus[seat]
             changeSeatStatus(resp, seat, urls[url], seatStatus[seat])
             time.sleep(timeDuration)
             choice = choice - 1
     else:
-        resp = respberries[choice]
+        resp = raspberries[choice]
         seatCount = input('Enter number of seats: ')
         newSeats = []
 
