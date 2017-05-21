@@ -244,7 +244,7 @@ WEB_ADDRESS = 'http://192.168.0.105:3000'
 MQTT_ADDRESS = '192.168.0.105'
 USERNAME = 'abc'
 PASSWORD = 'abc'
-RASPBERRY_ID = 'resp1'
+RASPBERRY_ID = 'rasp1'
 VEHICLE_ID = 'bus1'
 #################################################################
 # END GLOBAL CONSTANTS
@@ -256,7 +256,7 @@ VEHICLE_ID = 'bus1'
 #################################################################
 
 '''
-The callback for when the client receives a CONNACK response from the server.
+The callback for when the client receives a CONNACK rasponse from the server.
 '''
 def onConnect(client, userdata, flags, rc):
 	print('Connected with result code ' + str(rc))
@@ -305,7 +305,7 @@ A Helper function to publish the seat change status to MQTT
 '''
 def changeSeatStatus(mqttClient, seat, status):
 	url = '/' + VEHICLE_ID + '/' + RASPBERRY_ID
-	data = {'respId': RASPBERRY_ID, 'vehicleId': VEHICLE_ID, 'password': 'password', 'seatId': seat, 'status': status} 
+	data = {'raspId': RASPBERRY_ID, 'vehicleId': VEHICLE_ID, 'password': 'password', 'seatId': seat, 'status': status} 
 	data_json = json.dumps(data)
 	mqttClient.publish(url, data_json)
 
@@ -332,15 +332,15 @@ def startMQTT():
 #################################################################
 
 '''
-A Helper function to connect to RESPBERRY_INTERFACE of the IsarSitze
+A Helper function to connect to RaspberrY_INTERFACE of the IsarSitze
 to get the current seats list
 '''
 def getSeats():
-	data = {'respId': RASPBERRY_ID, 'vehicleId': VEHICLE_ID, 'password': 'password'}
+	data = {'raspId': RASPBERRY_ID, 'vehicleId': VEHICLE_ID, 'password': 'password'}
 	data_json = json.dumps(data)
 	headers = {'Content-type': 'application/json'}
 
-	response = requests.post(WEB_ADDRESS + '/resp/seats', data=data_json, headers=headers)
+	response = requests.post(WEB_ADDRESS + '/rasp/seats', data=data_json, headers=headers)
 
 	pprint(response.json())
 
@@ -353,15 +353,15 @@ def getSeats():
 
 
 '''
-A Helper function to connect to RESPBERRY_INTERFACE of the IsarSitze
+A Helper function to connect to RaspberrY_INTERFACE of the IsarSitze
 and update the current seats list
 '''
 def updateSeats(seats):
-	data = {'respId': RASPBERRY_ID, 'vehicleId': VEHICLE_ID, 'password': 'password', 'seats': seats}
+	data = {'raspId': RASPBERRY_ID, 'vehicleId': VEHICLE_ID, 'password': 'password', 'seats': seats}
 	data_json = json.dumps(data)
 	headers = {'Content-type': 'application/json'}
 
-	response = requests.put(WEB_ADDRESS + '/resp/seats', data=data_json, headers=headers)
+	response = requests.put(WEB_ADDRESS + '/rasp/seats', data=data_json, headers=headers)
 	pprint(response.json())
 
 #################################################################

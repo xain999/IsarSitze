@@ -1,0 +1,63 @@
+
+<template name="live">
+  <head>
+    <!--<link rel="stylesheet" href="live.css">-->
+    <title>IsarSitze</title>
+  </head>
+
+  <body>
+    <h1>Welcome to IsarSitze!</h1>
+
+    <form id="vehicles">
+      <!--<input type="radio" name="vehicles" value="All" checked> All<br>-->
+      <label> Select Vehicle: </label> <br/>
+      {{#each getVehicles}}
+        {{> vehicleRadio}}
+      {{/each}}
+    </form>
+
+    <!--<form id="rasp">
+
+    </form>-->
+
+    <!--Display All Vehicles-->
+    <h2>Live Status - Display</h2>
+    <table>
+      <tr>
+        <th> seat </th>
+        <th> status </th>
+      </tr>
+        {{#each displaySeatStatus}}
+            {{#each seats}}
+                {{> seatStatus}}
+            {{/each}}
+        {{/each}}
+    </table>
+
+  </body>
+</template>
+
+<template name="seatStatus">
+    <tr>
+      <td> {{id}} </td>
+      <td> {{#if status}} Occupied {{else}} Free {{/if}} </td>
+    </tr>
+</template>
+
+<template name="vehicleRadio">
+    <input type="radio" name="vehicles" class="vehicles" value={{vehicleId}}> {{vehicleId}} <br>
+</template>
+
+<!--<template name="rasp">
+    <label> Select Raspberry: </label> <br/>
+    <input type="radio" name="rasp" class="rasp" value="All" checked> All<br>
+    {{#each getRasps}}
+        {{> raspRadio}}
+    {{/each}}
+</template>
+
+<template name="raspRadio">
+    <input type="radio" name="rasp" class="rasp" value={{raspId}}> {{raspId}} <br>
+</template>
+
+UI.dynamic template=myTemplate-->

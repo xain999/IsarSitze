@@ -1,7 +1,9 @@
 import { Template } from 'meteor/templating';
-import { TransportVehicles, Respberries } from '../../database/collections.js'; //TODO: REMOVE SINCE SECURITY RISK
+import { TransportVehicles } from '../../database/collections.js'; //TODO: REMOVE SINCE SECURITY RISK
 
 import "./admin.html";
+
+var raspListView = [];
 
 onStartAdmin = function() {
     console.log("client/admin/admin.js onStartAdmin() called");
@@ -10,6 +12,7 @@ onStartAdmin = function() {
 Template.admin.helpers({
     vehicles: function() {
         console.log("client/admin/admin.js vehicles() called");
+        // find doesn't need server call
         return TransportVehicles.find({});
     }
 });
@@ -29,37 +32,36 @@ Template.admin.events({
                 const type = target.type.value;
 
                 // TODO: Check for wrong input
-                //if (respberryId == '' || belongsTo == null) {
+                //if (raspberryId == '' || belongsTo == null) {
                 //    alert('Wrong Input');
                 //    return;
                 //}
 
-                // Get list of respberryIds
-                var inputs, index, respberryIds=[];
-                inputs = document.getElementsByName('respberryId');
-                for (index = 0; index < inputs.length; ++index) {
-                    respberryIds.push(inputs[index].value); 
-                }
+                // Get list of raspberryIds
+                var inputs, raspberryIds=[];
+                inputs = $('.raspberryData');
 
-                // Insert a transportVehicle into the collection by calling serverSide method
-                Meteor.call('transportVehicles.insert', vehicleId, type, respberryIds);
+                inputs.each(function(i, obj) {
+                    var id = $(obj).find('input#id');
+                    var pwd = $(obj).find('input#pwd');
+                    raspberryIds.push({ id: id.val(), pwd:  pwd.val() });
+
+                    if (i == 0) {
+                        id.val('');
+                        pwd.val('');
+                    }
+                });
 
                 // Clear form
                 target.vehicleId.value = '';
                 target.type.value.unchecked;
-                for (index = 0; index < inputs.length; ++index) {
-                    inputs[index].value = ''; 
-                }
-            } else {
-                const vehicleId = event.target.vehicleId.value;
-                // Insert a transportVehicle into the collection by calling serverSide method
-                var retrievedData = TransportVehicles.findOne({vehicleId:vehicleId});
-                //Meteor.call('transportVehicles.fetch', vehicleId);
-                console.log(retrievedData.respberryIds);
-                event.target.vehicleId.value = retrievedData.vehicleId;
-                event.target.type.value = retrievedData.type;
-                event.target.respberryId.value = retrievedData.respberryIds;
                 
+                while (raspListView.length > 0) {
+                    Blaze.remove(raspListView.pop());
+                }
+
+                // Insert a transportVehicle into the collection by calling serverSide method
+                Meteor.call('transportVehicles.insert', vehicleId, type, raspberryIds);
             }
         } 
     },
@@ -72,7 +74,11 @@ Template.admin.events({
         Meteor.call('transportVehicles.remove', vehicleId);
         event.target.vehicleId.value='';
     },
-    'click #addRespberryButton':function(){
-        Blaze.render(Template.addRespberryTemplate, $("#addVehicleDiv")[0]);
+    'click #addRaspberryButton':function(){
+        var view = Blaze.render(Template.addRaspberryTemplate, $("#addVehicleDiv")[0]);
+        raspListView.push(view);
+    },
+    'click #logout'(event) {
+        Meteor.logout();
     }
 });
