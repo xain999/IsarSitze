@@ -11,8 +11,16 @@ Fiber = Npm.require('fibers');
 
 subscribeToMQTT = function(name, belongsTo) {
     const topic = "/" + belongsTo + "/" + name;
-    mqttClient.subscribe(topic);
-    console.log("subscribed to: " + topic);
+    mqttClient.subscribe(topic, function() {
+        console.log("subscribed to: " + topic);
+    });
+}
+
+unsubscribeToMQTT = function(name, belongsTo) {
+    const topic = "/" + belongsTo + "/" + name;
+    mqttClient.unsubscribe(topic, function() {
+        console.log("unsubscribed from: " + topic);
+    });
 }
 
 startMQTT = function() {

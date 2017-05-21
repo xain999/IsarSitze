@@ -24,4 +24,13 @@ if (Meteor.isServer) {
     Meteor.publish(null, function() {
         return SeatsData.find();
     });
+
+    let administrators = [
+        {
+            name: { first: 'Admin', last: 'McAdmin' },
+            email: 'admin@admin.com',
+            password: 'password'
+        }
+    ];
+    createUsers(administrators);
 }

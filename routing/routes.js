@@ -1,12 +1,12 @@
 
 Router.route('/live', function () {
   this.render('live');
-  startCurrent();
+  startLive();
 });
 
 Router.route('/', function () {
-  this.render('public');
-  startPublic();
+  this.render('live');
+  startLive();
 });
 
 Router.route('/public', function () {
@@ -17,6 +17,10 @@ Router.route('/public', function () {
 Router.route('/admin', function () {
   this.render('admin');
   startAdmin();
+});
+
+Router.plugin('ensureSignedIn', {
+    only: ['admin']
 });
 
 if (Meteor.isServer) {

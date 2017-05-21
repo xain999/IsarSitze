@@ -23,3 +23,7 @@ startAdmin = function() {
     console.log("client/main.js startAdmin() called");
     onStartAdmin();
 }
+
+Accounts.config({
+    forbidClientAccountCreation: true
+});

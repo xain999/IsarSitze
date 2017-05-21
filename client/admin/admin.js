@@ -77,5 +77,8 @@ Template.admin.events({
     'click #addRaspberryButton':function(){
         var view = Blaze.render(Template.addRaspberryTemplate, $("#addVehicleDiv")[0]);
         raspListView.push(view);
+    },
+    'click #logout'(event) {
+        Meteor.logout();
     }
 });

@@ -29,7 +29,7 @@ Meteor.methods({
             raspberryIds[i] = raspberryIds[i].id;
 
             // subscribing to urls using MQTT
-            subscribeToMQTT(raspberryIds[i].id, vehicleId);
+            subscribeToMQTT(raspberryIds[i], vehicleId);
         }
  
         // adding transport vehicle to Database
@@ -47,6 +47,13 @@ Meteor.methods({
         SeatsInfo.remove({});
     },
     'transportVehicles.remove'(vehicleId){
+
+        // unsubscribing
+        raspberries =  Raspberries.find({ belongsTo: vehicleId }).fetch();
+        for (i = 0; i < raspberries.length; i++) {
+            unsubscribeToMQTT(raspberries[i].id, raspberries[i].belongsTo);
+        }
+
         TransportVehicles.remove({ vehicleId: vehicleId });
         Raspberries.remove({ belongsTo: vehicleId });
         SeatsInfo.remove({vehicleId: vehicleId});
