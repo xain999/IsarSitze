@@ -13,10 +13,9 @@ import paho.mqtt.client as mqtt
 #################################################################
 WEB_ADDRESS = 'http://192.168.0.105:3000'
 MQTT_ADDRESS = '192.168.0.105'
-USERNAME = 'abc'
-PASSWORD = 'abc'
-RASPBERRY_ID = 'rasp1'
 VEHICLE_ID = 'bus1'
+RASPBERRY_ID = 'rasp1'
+PASSWORD = 'rasp1'
 #################################################################
 # END GLOBAL CONSTANTS
 #################################################################
@@ -305,7 +304,7 @@ A Helper function to publish the seat change status to MQTT
 '''
 def changeSeatStatus(mqttClient, seat, status):
 	url = '/' + VEHICLE_ID + '/' + RASPBERRY_ID
-	data = {'raspId': RASPBERRY_ID, 'vehicleId': VEHICLE_ID, 'password': 'password', 'seatId': seat, 'status': status} 
+	data = {'raspId': RASPBERRY_ID, 'vehicleId': VEHICLE_ID, 'password': PASSWORD, 'seatId': seat, 'status': status} 
 	data_json = json.dumps(data)
 	mqttClient.publish(url, data_json)
 
@@ -412,7 +411,13 @@ def main(argv):
 			getSerialData()
 			if checkPacketType('01'):
 				parsedData = parseData(serialData)
-				seats.append(parsedData['seatId'])
+				newId = parsedData['seatId']
+				if parsedData['seatStatus']:
+					if newId in seats:
+						seats.append(newId)
+						print "Seat added with id: " + str(newId)
+					else:
+						print "Seat Id Already added. Id: " str(newId)
 
 		updateSeats(seats)
 
