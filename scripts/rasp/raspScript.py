@@ -304,7 +304,7 @@ A Helper function to publish the seat change status to MQTT
 '''
 def changeSeatStatus(mqttClient, seat, status):
 	url = '/' + VEHICLE_ID + '/' + RASPBERRY_ID
-	data = {'raspId': RASPBERRY_ID, 'vehicleId': VEHICLE_ID, 'password': PASSWORD, 'seatId': seat, 'status': status} 
+	data = {'raspId': RASPBERRY_ID, 'vehicleId': VEHICLE_ID, 'pwd': PASSWORD, 'seatId': seat, 'status': status} 
 	data_json = json.dumps(data)
 	mqttClient.publish(url, data_json)
 
@@ -335,7 +335,7 @@ A Helper function to connect to RaspberrY_INTERFACE of the IsarSitze
 to get the current seats list
 '''
 def getSeats():
-	data = {'raspId': RASPBERRY_ID, 'vehicleId': VEHICLE_ID, 'password': PASSWORD}
+	data = {'raspId': RASPBERRY_ID, 'vehicleId': VEHICLE_ID, 'pwd': PASSWORD}
 	data_json = json.dumps(data)
 	headers = {'Content-type': 'application/json'}
 
@@ -356,7 +356,7 @@ A Helper function to connect to RaspberrY_INTERFACE of the IsarSitze
 and update the current seats list
 '''
 def updateSeats(seats):
-	data = {'raspId': RASPBERRY_ID, 'vehicleId': VEHICLE_ID, 'password': 'PASSWORD, 'seats': seats}
+	data = {'raspId': RASPBERRY_ID, 'vehicleId': VEHICLE_ID, 'pwd': 'PASSWORD, 'seats': seats}
 	data_json = json.dumps(data)
 	headers = {'Content-type': 'application/json'}
 
@@ -407,15 +407,15 @@ def main(argv):
 		seats = []
 
 		while (seatCount > 0):
-			seatCount = seatCount - 1;
 			getSerialData()
 			if checkPacketType('01'):
 				parsedData = parseData(serialData)
 				newId = parsedData['seatId']
 				if parsedData['seatStatus']:
-					if newId in seats:
+					if newId not in seats:
 						seats.append(newId)
 						print "Seat added with id: " + str(newId)
+						seatCount = seatCount - 1;
 					else:
 						print "Seat Id Already added. Id: " + str(newId)
 
