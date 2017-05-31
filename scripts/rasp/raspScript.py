@@ -417,7 +417,7 @@ def main(argv):
 						seats.append(newId)
 						print "Seat added with id: " + str(newId)
 					else:
-						print "Seat Id Already added. Id: " str(newId)
+						print "Seat Id Already added. Id: " + str(newId)
 
 		updateSeats(seats)
 
