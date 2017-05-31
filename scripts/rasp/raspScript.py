@@ -335,7 +335,7 @@ A Helper function to connect to RaspberrY_INTERFACE of the IsarSitze
 to get the current seats list
 '''
 def getSeats():
-	data = {'raspId': RASPBERRY_ID, 'vehicleId': VEHICLE_ID, 'password': 'password'}
+	data = {'raspId': RASPBERRY_ID, 'vehicleId': VEHICLE_ID, 'password': PASSWORD}
 	data_json = json.dumps(data)
 	headers = {'Content-type': 'application/json'}
 
@@ -356,7 +356,7 @@ A Helper function to connect to RaspberrY_INTERFACE of the IsarSitze
 and update the current seats list
 '''
 def updateSeats(seats):
-	data = {'raspId': RASPBERRY_ID, 'vehicleId': VEHICLE_ID, 'password': 'password', 'seats': seats}
+	data = {'raspId': RASPBERRY_ID, 'vehicleId': VEHICLE_ID, 'password': 'PASSWORD, 'seats': seats}
 	data_json = json.dumps(data)
 	headers = {'Content-type': 'application/json'}
 
