@@ -7,23 +7,23 @@
   </head>
 
   <body>
-    <h1>Welcome to IsarSitze!</h1>
-
+    <h1>Welcome to IsarSitze! <br/> <small> Seat Status </small> </h1>
     <!--Display All Vehicles-->
-    <h2>Seat Status - Display</h2>
-    <table>
-      <tr>
-        <th> vechicleId </th>
-        <th> raspberryid </th>
-        <th> seat </th>
-        <th> status </th>
-        <th> time </th>
-        <th> url </th>
-      </tr>
-        {{#each displaySeats}}
-            {{> seatDisplay}}
-        {{/each}}
-    </table>
+    <div class="table-responsive">
+      <table class="table table-hover">
+        <tr>
+          <th> Vechicle ID </th>
+          <th> Raspberry ID </th>
+          <th> Seat </th>
+          <th> Status </th>
+          <th> Time </th>
+          <th> URL </th>
+        </tr>
+          {{#each displaySeats}}
+              {{> seatDisplay}}
+          {{/each}}
+      </table>
+    </div>
 
   </body>
 </template>

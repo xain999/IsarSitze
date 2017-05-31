@@ -1,0 +1,110 @@
+<template name= "admin">
+    <head>
+        <title>IsarSitze - Admin Panel</title>
+    </head>
+
+    <body>
+        <h1>Welcome to IsarSitze - Admin Panel!</h1>
+
+        <!--Display All Vehicles-->
+        <h2>TransportVehicles- Display</h2>
+
+        <div class="table-responsive">
+          <table class="table table-striped">
+              <tr>
+                  <th> VechicleId </th>
+                  <th> Type </th>
+                  <th> RasberryIds </th>
+              </tr>
+              {{#each vehicles}}
+                  {{> vehicle}}
+              {{/each}}
+          </table>
+        </div>
+
+        <!--Delete All Vehicles-->
+        <h2>TransportVehicles- Remove All Vehicles</h2>
+        <p> Note: Raspberries will be deleted along with the transport </p>
+        <button type="button" class="btn btn-primary" id="removeAllVehicles">Remove All Vehicles</button>
+
+        <!--Delete Specific Vehicles-->
+        <h2>TransportVehicles- Remove Specific Vehicle</h2>
+        <p> Note: Raspberries will be deleted along with the transport </p>
+        <form class="deleteSpecificVehicleForm">
+            <label for="vehicleId">Enter Vehicle ID</label>
+            <input type="text" class="form-control" name="vehicleId" id="vehicleId" placeholder="Vehicle ID"/>
+            <button type="submit" class="btn btn-primary">Remove this Vehicles</button>
+        </form>
+
+        <!--Add/Update Vehicle-->
+        <h2>TransportVehicles- Add/Update Vehicle</h2>
+        <form class="addVehicle">
+          <div>
+            <label for="addVehicleId">Vehicle ID</label>
+            <input type="text" class="form-control" name="vehicleId" id="addVehicleId" placeholder="Add Vehicle ID"/>
+            <button type="submit" class="btn btn-primary" id="updateVehicle">Update</button>
+          </div>
+            <!--TODO: ADD ENUMERATION-->
+          <div>
+            <span>Choose Vechicle Type:</span>
+            <!-- <ul>
+                <li> <input type="radio" name="type" value="bus"> bus </li>
+                <li> <input type="radio" name="type" value="train"> train </li>
+                <li> <input type="radio" name="type" value="tram"> tram </li>
+            </ul> -->
+            <div class="radio-inline">
+              <label>
+                <input type="radio" name="type" id="busRadio" value="bus">bus
+              </label>
+            </div>
+            <div class="radio-inline">
+              <label>
+                <input type="radio" name="type" id="trainRadio" value="train">train
+              </label>
+            </div>
+            <div class="radio-inline">
+              <label>
+                <input type="radio" name="type" id="tramRadio" value="tram">tram
+              </label>
+            </div>
+          </div>
+          <form class="form-inline">
+            <div class="form-group">
+              <label for="addRaspberryButton"> Add Raspberry ID that are installed in the vehicle</label>
+              <!-- <br/> <br/> -->
+              <div id="addVehicleDiv" name="addVehicleDiv">
+                  {{>addRaspberryTemplate}}
+              </div>
+              <button type="button" class="btn btn-primary" id="addRaspberryButton">Add raspberry</button>
+            </div>
+          </form>
+          <button type="submit" class="btn btn-primary" id="addVehicle"> Add </button>
+        </form>
+
+        <br/>
+
+        <button type="button" class="btn btn-primary" id="logout">Logout</button>
+        <br/>
+
+    </body>
+</template>
+
+<template name="vehicle">
+    <tr>
+        <td> {{vehicleId}} </td>
+        <td> {{type}} </td>
+        <td> [
+            {{#each raspberryIds}}
+                {{this}}
+            {{/each}}
+            ]
+        </td>
+    </tr>
+</template>
+
+<template name="addRaspberryTemplate">
+    <li class="raspberryData">
+        <input type="text" name="raspberryId" id="id" placeholder="Raspberry ID"/>
+        <input type="password" name="raspberryPwd" id="pwd" placeholder="Raspberry Password"/>
+    </li>
+</template>

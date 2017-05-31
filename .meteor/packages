@@ -22,3 +22,5 @@ iron:router
 accounts-ui
 accounts-password
 useraccounts:iron-routing
+twbs:bootstrap
+tejasmanohar:editable-table

@@ -1,0 +1,37 @@
+
+
+<template name="public">
+  <head>
+    <link rel="stylesheet" href="public.css">
+    <title>IsarSitze</title>
+  </head>
+
+  <body>
+    <h1>Welcome to IsarSitze! </br> <small> Seat Status </small> </h1>
+    <table>
+      <tr>
+        <th> vechicleId </th>
+        <th> raspberryid </th>
+        <th> seat </th>
+        <th> status </th>
+        <th> time </th>
+        <th> url </th>
+      </tr>
+        {{#each displaySeats}}
+            {{> seatDisplay}}
+        {{/each}}
+    </table>
+
+  </body>
+</template>
+
+<template name="seatDisplay">
+    <tr>
+      <td> {{vehicleId}} </td>
+      <td> {{raspId}} </td>
+      <td> {{seatId}} </td>
+      <td> {{#if seatStatus}} Occupied {{else}} Free {{/if}} </td>
+      <td> {{createdAt}} </td>
+      <td> {{url}} </td>
+    </tr>
+</template>

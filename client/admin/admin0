@@ -21,10 +21,10 @@ Template.admin.events({
     'submit .addVehicle'(event) {
         // Prevent default browser form submit
         event.preventDefault();
-
+    
         console.log(event);
         // Get value from form element
-        var btn = $(event.target).find("button[type=submit]:focus");
+        var btn = $(event.target).find("input[type=submit]:focus");
         if (btn) {
             if (btn[0].id === 'addVehicle') {
                 const target = event.target;
@@ -55,7 +55,7 @@ Template.admin.events({
                 // Clear form
                 target.vehicleId.value = '';
                 target.type.value.unchecked;
-
+                
                 while (raspListView.length > 0) {
                     Blaze.remove(raspListView.pop());
                 }
@@ -63,14 +63,14 @@ Template.admin.events({
                 // Insert a transportVehicle into the collection by calling serverSide method
                 Meteor.call('transportVehicles.insert', vehicleId, type, raspberryIds);
             }
-        }
+        } 
     },
     'click #removeAllVehicles'(event) {
         Meteor.call('transportVehicles.removeAll');
-    },
-    'change select': function(event){
+    },    
+    'submit .deleteSpecificVehicleForm'(event){
         event.preventDefault();
-        var vehicleId = event.target.vehicleId.value;
+        const vehicleId = event.target.vehicleId.value;
         Meteor.call('transportVehicles.remove', vehicleId);
         event.target.vehicleId.value='';
     },

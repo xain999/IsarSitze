@@ -29,11 +29,17 @@ Template.live.helpers({
 });
 
 Template.live.events({
-    'change select': function(event){
-         event.preventDefault();
-         vehicle = event.target.value;
-         console.log(vehicle);
+    'click .vehicles'(event) {
+         console.log("client/live/live.js event radioCheck called");
+
+         vehicle = $('input[name=vehicles]:checked', '#vehicles').val();
          searchCriteria = {vehicleId: vehicle};
          dependency.changed();
-      }
+
+        //  vehicle = $('input[name=vehicles]:checked', '#vehicles').val();
+        //  SeatsInfo.find({vehicleId: vehicle})
+
+        //  Blaze.render(Template.rasp, $('form#rasp')[0])
+        //  //$('form#rasp').template('rasp');
+    }
 });

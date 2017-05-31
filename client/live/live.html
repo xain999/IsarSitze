@@ -6,14 +6,22 @@
   </head>
 
   <body>
-    <h1>Welcome to IsarSitze!</h1>
+    <h1>Welcome to IsarSitze! </h1>
 
     <form id="vehicles">
       <!--<input type="radio" name="vehicles" value="All" checked> All<br>-->
-      <label> Select Vehicle: </label> <br/>
-      {{#each getVehicles}}
-        {{> vehicleRadio}}
-      {{/each}}
+      <label> Select Vehicle ID: </label> <br/>
+      <!-- {{#each getVehicles}}
+        {{> vehicleSelect}}
+      {{/each}} -->
+      <select name="vehicles" id="vehicleSelectID" class="vehicles form-control">
+        <option value="" >Choose Vehicle ID...</option>
+           {{#each getVehicles}}
+           <option value="{{value}}">
+               {{vehicleId}}
+           </option>
+       {{/each}}
+      </select>
     </form>
 
     <!--<form id="rasp">
@@ -21,18 +29,20 @@
     </form>-->
 
     <!--Display All Vehicles-->
-    <h2>Live Status - Display</h2>
-    <table>
-      <tr>
-        <th> seat </th>
-        <th> status </th>
-      </tr>
-        {{#each displaySeatStatus}}
-            {{#each seats}}
-                {{> seatStatus}}
-            {{/each}}
-        {{/each}}
-    </table>
+    <h2>Live Status</h2>
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <tr>
+          <th> seat </th>
+          <th> status </th>
+        </tr>
+          {{#each displaySeatStatus}}
+              {{#each seats}}
+                  {{> seatStatus}}
+              {{/each}}
+          {{/each}}
+      </table>
+    </div>
 
   </body>
 </template>
@@ -44,8 +54,9 @@
     </tr>
 </template>
 
-<template name="vehicleRadio">
-    <input type="radio" name="vehicles" class="vehicles" value={{vehicleId}}> {{vehicleId}} <br>
+<template name="vehicleSelect">
+   <!-- <input type="radio" name="vehicles" class="vehicles" value={{vehicleId}}> {{vehicleId}} <br> -->
+  <select name="vehicles" id="vehicleSelectID" class="vehicles" value={{vehicleId}}> {{vehicleId}} </select><br>
 </template>
 
 <!--<template name="rasp">
