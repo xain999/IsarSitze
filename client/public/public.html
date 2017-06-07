@@ -2,14 +2,18 @@
 
 <template name="public">
   <head>
-    <link rel="stylesheet" href="public.css">
+    <!-- <link rel="stylesheet" href="public.css"> -->
     <title>IsarSitze</title>
   </head>
 
   <body>
-    <h1>Welcome to IsarSitze! <br/> <small> Seat Status </small> </h1>
+    <h1>Travis<br/> <small> Seat Status </small> </h1>
     <!--Display All Vehicles-->
-    <div class="table-responsive">
+
+    <!-- {{> reactiveTable collection=displaySeats showNavigation='never' rowsPerPage=5}} -->
+    {{> reactiveTable collection=collection  settings=settings}}
+
+    <!-- <div class="table-responsive">
       <table class="table table-hover">
         <tr>
           <th> Vechicle ID </th>
@@ -23,12 +27,12 @@
               {{> seatDisplay}}
           {{/each}}
       </table>
-    </div>
+    </div> -->
 
   </body>
 </template>
 
-<template name="seatDisplay">
+<!-- <template name="seatDisplay">
     <tr>
       <td> {{vehicleId}} </td>
       <td> {{raspId}} </td>
@@ -37,4 +41,4 @@
       <td> {{createdAt}} </td>
       <td> {{url}} </td>
     </tr>
-</template>
+</template> -->

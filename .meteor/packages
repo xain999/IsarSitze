@@ -24,3 +24,6 @@ accounts-password
 useraccounts:iron-routing
 twbs:bootstrap
 tejasmanohar:editable-table
+aslagle:reactive-table
+templates:tabs
+session
