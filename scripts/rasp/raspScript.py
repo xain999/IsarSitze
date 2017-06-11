@@ -4,6 +4,7 @@ import os
 import sys
 import json
 import requests
+import time
 
 from pprint import pprint
 import paho.mqtt.client as mqtt
@@ -16,6 +17,7 @@ MQTT_ADDRESS = '192.168.0.105'
 VEHICLE_ID = 'bus1'
 RASPBERRY_ID = 'rasp1'
 PASSWORD = 'rasp1'
+MQTT_CERT = 'GeoTrust Global CA.pem'
 #################################################################
 # END GLOBAL CONSTANTS
 #################################################################
@@ -314,6 +316,7 @@ A helper function to start MQTT
 '''
 def startMQTT():
 	mqttClient = mqtt.Client()
+	mqttClient.tls_set(MQTT_CERT)
 	mqttClient.on_connect = onConnect
 	mqttClient.on_message = onMessage
 
@@ -356,7 +359,7 @@ A Helper function to connect to RaspberrY_INTERFACE of the IsarSitze
 and update the current seats list
 '''
 def updateSeats(seats):
-	data = {'raspId': RASPBERRY_ID, 'vehicleId': VEHICLE_ID, 'pwd': 'PASSWORD, 'seats': seats}
+	data = {'raspId': RASPBERRY_ID, 'vehicleId': VEHICLE_ID, 'pwd': PASSWORD, 'seats': seats}
 	data_json = json.dumps(data)
 	headers = {'Content-type': 'application/json'}
 
@@ -381,11 +384,20 @@ def main(argv):
 		print "Use: file.py serialDeviceName [--configure]"
 		return
 
-	ser = serial.Serial(argv[0], 57600, timeout = 0)  # open serial port
+	check = 0
+	while True:
+		ser = serial.Serial(argv[0], 57600, timeout = 0)  # open serial port
 
-	if commandReadVersion() != True:
-		print "Communication not successful - exiting..."
-		return
+		if commandReadVersion() != True:
+			check = check + 1
+			time.sleep(5)
+
+			if check > 5:
+				print "Communication not successful - exiting..."
+				return
+		else:
+			break
+
 	commandReadBaseId()
 
 	# normal run
@@ -396,10 +408,13 @@ def main(argv):
 		print "MQTT Setup completed. Waiting for data"
 	
 		while (True):
-			getSerialData()
-			if checkPacketType('01'):
-				parsedData = parseData(serialData)
-				changeSeatStatus(mqttClient, parsedData['seatId'], parsedData['seatStatus'])
+			try:
+				getSerialData()
+				if checkPacketType('01'):
+					parsedData = parseData(serialData)
+					changeSeatStatus(mqttClient, parsedData['seatId'], parsedData['seatStatus'])
+			except:
+				print "got an error!"
 
 	# configure mode
 	else:
