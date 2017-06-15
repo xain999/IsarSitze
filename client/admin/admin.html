@@ -26,7 +26,6 @@
 </template>
 
 <template name="viewVehicleTemplate">
-  {{> reactiveTable collection=collection fields=fields settings=settings}}
 
   <form class="form-inline">
     <div class="form-group">
@@ -34,6 +33,8 @@
       <label for= "removeAllVehicles">Note: Raspberries will be deleted along with the transport information</label>
     </div>
   </form>
+
+  {{> reactiveTable collection=collection fields=fields settings=settings}}
 
   {{#if showEditVehicleDiv}}
     {{>updateVehicleTemplate}}
@@ -53,15 +54,41 @@
 
 <template name="updateVehicleTemplate">
   <form class="updateVehicle form-inline">
-    {{>addVehicleIdTemplate}}
-    {{>addVehicleTypeTemplate}}
-    <label for="addRaspberryButton"> Add Raspberry ID that are installed in the vehicle</label>
+    <div class="form-group">
+      <label for="updateVehicleId">Vehicle ID</label>
+      <input type="text" class="form-control" name="updateVehicleId" id="updateVehicleId" placeholder="Add Vehicle ID" value="{{vehicleDetails.vehicleId}}"/>
+    </div>
+    <div>
+      <label>Vechicle Type: </label>
+      <div class="radio-inline">
+        <label><input type="radio" name="updateType" id="updateBusRadio" value="bus" {{isChecked 'bus'}}>Bus</label>
+      </div>
+      <div class="radio-inline">
+        <label><input type="radio" name="updateType" id="updateTrainRadio" value="train" {{isChecked 'train'}}>Train</label>
+      </div>
+      <div class="radio-inline">
+        <label><input type="radio" name="updateType" id="updateTramRadio" value="tram" {{isChecked 'tram'}}>Tram</label>
+      </div>
+    </div>
+    <label for="updateRaspberryButton"> Add Raspberry ID that are installed in the vehicle</label>
     <form class="form-inline">
-        <div id="addVehicleDiv" name="addVehicleDiv" class="form-group">
-            {{>addRaspberryTemplate}}
+        <div id="updateVehicleDiv" name="updateVehicleDiv" class="form-group">
+            {{#each ras.raspberryIds}}
+              <li class="updateRaspberryData">
+                <div class="form-group">
+                  <label for="updateId">Raspberry ID</label>
+                  <input type="text" class="form-control" name="updateRaspberryId" id="updateId" placeholder="Raspberry ID"  value="{{this}}"/>
+                </div>
+                <div class="form-group">
+                  <label for="updatePwd">Raspberry Password</label>
+                  <input type="text" class="form-control" name="updateRaspberryPwd" id="updatePwd" placeholder="Raspberry Password" value="{{this}}"/>
+                </div>
+              </li>
+            {{/each}}
         </div>
-        <button type="button" class="btn btn-primary" id="addRaspberryButton">Add Another Raspberry</button>
+        <button type="button" class="btn btn-primary" id="updateRaspberryButton">Add Another Raspberry</button>
     </form>
+
     <button type="submit" class="btn btn-primary" id="updateVehicle"> Update </button>
   </form>
 </template>
@@ -102,11 +129,24 @@
     <li class="raspberryData">
       <div class="form-group">
         <label for="id">Raspberry ID</label>
-        <input type="text" class="form-control" name="raspberryId" id="id" placeholder="Raspberry ID"/>
+        <input type="text" class="form-control" name="raspberryId" id="id" placeholder="Raspberry ID"  value="{{vehicleDetails.vehicleId}}"/>
       </div>
       <div class="form-group">
         <label for="pwd">Raspberry Password</label>
         <input type="password" class="form-control" name="raspberryPwd" id="pwd" placeholder="Raspberry Password"/>
       </div>
     </li>
+</template>
+
+<template name="updateRaspberryTemplate">
+  <li class="updateRaspberryData">
+    <div class="form-group">
+      <label for="updateId">Raspberry ID</label>
+      <input type="text" class="form-control" name="updateRaspberryId" id="updateId" placeholder="Raspberry ID"  value="{{this}}"/>
+    </div>
+    <div class="form-group">
+      <label for="updatePwd">Raspberry Password</label>
+      <input type="text" class="form-control" name="updateRaspberryPwd" id="updatePwd" placeholder="Raspberry Password" value="{{this}}"/>
+    </div>
+  </li>
 </template>

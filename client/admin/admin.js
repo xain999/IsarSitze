@@ -1,5 +1,5 @@
 import { Template } from 'meteor/templating';
-import { TransportVehicles } from '../../database/collections.js'; //TODO: REMOVE SINCE SECURITY RISK
+import { TransportVehicles, Raspberries } from '../../database/collections.js'; //TODO: REMOVE SINCE SECURITY RISK
 
 import "./admin.html";
 
@@ -60,39 +60,33 @@ Template.adminTabTemplate.helpers({
 });
 
 Template.addVehicleTemplate.events({
-  'submit .addVehicle'(event) {
+  'submit form': function (event, template) {
+    // TODO: add mandatory fields
       event.preventDefault();
       console.log(event);
-      var btn = $(event.target).find("button[type=submit]:focus");
-      if (btn) {
-          if (btn[0].id === 'addVehicle') {
-              const target = event.target;
-              const vehicleId = target.vehicleId.value;
-              const type = target.type.value;
+      const vehicleId = event.target.vehicleId.value;
+      const type = event.target.type.value;
 
-              var inputs, raspberryIds=[];
-              inputs = $('.raspberryData');
+      var inputs, raspberryIds=[];
+      inputs = $('.raspberryData');
 
-              inputs.each(function(i, obj) {
-                  var id = $(obj).find('input#id');
-                  var pwd = $(obj).find('input#pwd');
-                  raspberryIds.push({ id: id.val(), pwd:  pwd.val() });
+      inputs.each(function(i, obj) {
+      var id = $(obj).find('input#id');
+      var pwd = $(obj).find('input#pwd');
+      raspberryIds.push({ id: id.val(), pwd:  pwd.val() });
 
-                  if (i == 0) {
-                      id.val('');
-                      pwd.val('');
-                  }
-              });
-              target.vehicleId.value = '';
-              target.type.value.unchecked;
-
-              while (raspListView.length > 0) {
-                  Blaze.remove(raspListView.pop());
-              }
-              Meteor.call('transportVehicles.insert', vehicleId, type, raspberryIds);
-          }
+      if (i == 0) {
+        id.val('');
+        pwd.val('');
       }
-  },
+      });
+      event.target.vehicleId.value = '';
+      event.target.type.value.unchecked;
+      while (raspListView.length > 0) {
+        Blaze.remove(raspListView.pop());
+      }
+      Meteor.call('transportVehicles.insert', vehicleId, type, raspberryIds);
+    },
   'click #addRaspberryButton':function(){
       var view = Blaze.render(Template.addRaspberryTemplate, $("#addVehicleDiv")[0]);
       raspListView.push(view);
@@ -100,15 +94,75 @@ Template.addVehicleTemplate.events({
 });
 
 Template.updateVehicleTemplate.events({
-  'click #addRaspberryButton':function(){
-      var view = Blaze.render(Template.addRaspberryTemplate, $("#addVehicleDiv")[0]);
+  'click #updateRaspberryButton':function(){
+      var view = Blaze.render(Template.updateRaspberryTemplate, $("#updateVehicleDiv")[0]);
       raspListView.push(view);
-  }
+  },
+  'submit form': function (event, template) {
+    // TODO: add mandatory fields
+      event.preventDefault();
+      console.log("event", event.target.updateRaspberryIds);
+      const vehicleId = event.target.updateVehicleId.value;
+      const type = event.target.updateType.value;
+      const _id= Session.get('getVehicleDetails')._id;
+
+      var inputs, raspberryIds=[];
+      inputs = $('.updateRaspberryData');
+      console.log("inputs", inputs)
+
+      inputs.each(function(i, obj) {
+      var updateId = $(obj).find('input#updateId');
+      var updatePwd = $(obj).find('input#updatePwd');
+      var update_id = $(obj).find('input#_id');
+      console.log("update_id",update_id);
+      raspberryIds.push({ id: updateId.val(), pwd:  updatePwd.val() });
+
+      if (i == 0) {
+        updateId.val('');
+        updatePwd.val('');
+      }
+      });
+      console.log("Rasp", raspberryIds);
+      event.target.updateVehicleId.value = '';
+      event.target.updateType.value.unchecked;
+      while (raspListView.length > 0) {
+        Blaze.remove(raspListView.pop());
+      }
+      console.log("works till here");
+      Meteor.call('transportVehicles.update', vehicleId, type, raspberryIds, _id, Session.get('getVehicleDetails').vehicleId);
+      Session.set('showEditVehicle',false);
+    }
 });
 
+// Template.addVehicleTypeTemplate.helpers({
+//   isChecked: function(type) {
+//     console.log("session now",Session.get('getVehicleDetails').type );
+//     return ((Session.get('getVehicleDetails').type === type) ? "checked" : "");
+//   }
+// });
+
 Template.updateVehicleTemplate.helpers({
-  
+  vehicleDetails: function() {
+      console.log("client/admin/admin.js raspberryDetails() called");
+      return Session.get('getVehicleDetails');
+  },
+  isChecked: function(type) {
+    return ((Session.get('getVehicleDetails').type === type) ? "checked" : "");
+  },
+  ras:function(){
+    console.log("respid",Session.get('getVehicleDetails').raspberryIds);
+    console.log("resppwd",Session.get('getVehicleDetails').raspberryIds[0]);
+    console.log(Session.get('getVehicleDetails').vehicleId);
+    raspberries = Raspberries.find({ belongsTo: Session.get('getVehicleDetails').vehicleId }).fetch();
+    console.log("rasbs", raspberries)
+    return Session.get('getVehicleDetails');
+  }
 });
+//
+// Template.updateVehicleTemplate.rendered = function() {
+//   console.log("hania this is called")
+//     $('input[name="raspberryId"]').val(Session.get('getVehicleDetails').raspberryIds);
+//  }
 
 Template.viewVehicleTemplate.events({
   'click .reactive-table tbody tr': function (event) {
@@ -122,8 +176,12 @@ Template.viewVehicleTemplate.events({
       Meteor.call('transportVehicles.remove', post.vehicleId);
     }
     if (event.target.className == "editbtn"){
-        console.log("here event");
+        console.log("here - event");
         Session.set('showEditVehicle',true);
+        Session.set('getVehicleDetails', post);
+        console.log("now showing for: ",(Session.get('getVehicleDetails')));
+        console.log("_id: ",(Session.get('getVehicleDetails')._id));
+
         // document.getElementById("addVehicleId").value = post.vehicleId;
         // if(post.type == "bus")
         //   busRadio.checked=true;
