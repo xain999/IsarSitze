@@ -4,7 +4,7 @@ import { TransportVehicles, Raspberries, SeatsData, SeatsInfo } from '../../data
 Fiber = Npm.require('fibers');
 
 // Turn this Flag off in debuggin if needed
-const USE_MQTT = true;
+const DEPLOY = true;
 
 // Can be moved to a universal place if multiple accesses required
 Fiber = Npm.require('fibers');
@@ -24,11 +24,13 @@ unsubscribeToMQTT = function(name, belongsTo) {
 }
 
 startMQTT = function() {
+    mqtt = require('mqtt');
 
-    //for debugging
-    if (USE_MQTT) {
+    //for deployment
+    if (DEPLOY) {
         //start Mqtt connection, global instance
-        mqtt = require('mqtt');
+        mqttClient  = mqtt.connect('mqtts://mqtt.travis-mobility.com');
+    } else {
         mqttClient  = mqtt.connect('mqtt://localhost');
     }
 

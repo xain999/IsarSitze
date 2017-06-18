@@ -11,6 +11,6 @@ Template.public.helpers({
     // Find doesn't need server call
     displaySeats: function() {
         console.log("client/public/public.js displaySeats() called");
-        return SeatsData.find({}, {sort: {createdAt: -1}});
+        return SeatsData.find({}, {sort: {createdAt: -1}, limit: 500});
     }
 });
