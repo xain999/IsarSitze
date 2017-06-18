@@ -29,7 +29,7 @@ startMQTT = function() {
     //for deployment
     if (DEPLOY) {
         //start Mqtt connection, global instance
-        mqttClient  = mqtt.connect('mqtts://mqtt.travis-mobility.com');
+        mqttClient  = mqtt.connect('mqtts://mqtt.travis-mobility.com:1883');
     } else {
         mqttClient  = mqtt.connect('mqtt://localhost');
     }
