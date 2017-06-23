@@ -1,7 +1,7 @@
-
 <template name="live">
   <head>
-    <!--<link rel="stylesheet" href="live.css">-->
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+    <link rel="stylesheet" type="text/css" href="./live.css">
     <title>IsarSitze</title>
   </head>
 
@@ -9,11 +9,7 @@
     <h1>Travis </h1>
 
     <form id="vehicles">
-      <!--<input type="radio" name="vehicles" value="All" checked> All<br>-->
       <label> Select Vehicle ID: </label> <br/>
-      <!-- {{#each getVehicles}}
-        {{> vehicleSelect}}
-      {{/each}} -->
       <select name="vehicles" id="vehicleSelectID" class="vehicles form-control">
         <option value="" >Choose Vehicle ID...</option>
            {{#each getVehicles}}
@@ -24,51 +20,18 @@
       </select>
     </form>
 
-    <!--<form id="rasp">
-
-    </form>-->
-
     <!--Display All Vehicles-->
     <h2>Live Status</h2>
-    <div class="table-responsive">
-      <table class="table table-striped">
-        <tr>
-          <th> seat </th>
-          <th> status </th>
-        </tr>
-          {{#each displaySeatStatus}}
-              {{#each seats}}
-                  {{> seatStatus}}
-              {{/each}}
-          {{/each}}
-      </table>
+
+    <div class="plane">
+      <div id="holder">
+          <ul  id="place">
+          </ul>
+      </div>
     </div>
-
-  </body>
-</template>
-
-<template name="seatStatus">
-    <tr>
-      <td> {{id}} </td>
-      <td> {{#if status}} Occupied {{else}} Free {{/if}} </td>
-    </tr>
+    </body>
 </template>
 
 <template name="vehicleSelect">
-   <!-- <input type="radio" name="vehicles" class="vehicles" value={{vehicleId}}> {{vehicleId}} <br> -->
   <select name="vehicles" id="vehicleSelectID" class="vehicles" value={{vehicleId}}> {{vehicleId}} </select><br>
 </template>
-
-<!--<template name="rasp">
-    <label> Select Raspberry: </label> <br/>
-    <input type="radio" name="rasp" class="rasp" value="All" checked> All<br>
-    {{#each getRasps}}
-        {{> raspRadio}}
-    {{/each}}
-</template>
-
-<template name="raspRadio">
-    <input type="radio" name="rasp" class="rasp" value={{raspId}}> {{raspId}} <br>
-</template>
-
-UI.dynamic template=myTemplate-->
