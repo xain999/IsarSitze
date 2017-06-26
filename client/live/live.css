@@ -6,36 +6,12 @@ html {
   font-size: 16px;
 }
 
-.plane {
+.vehicle {
   margin: 20px auto;
   max-width: 300px;
 }
 
-.exit {
-  position: relative;
-  height: 50px;
-}
-.exit:before, .exit:after {
-  content: "EXIT";
-  font-size: 14px;
-  line-height: 18px;
-  padding: 0px 2px;
-  font-family: "Arial Narrow", Arial, sans-serif;
-  display: block;
-  position: absolute;
-  background: green;
-  color: white;
-  top: 50%;
-  transform: translate(0, -50%);
-}
-.exit:before {
-  left: 0;
-}
-.exit:after {
-  right: 0;
-}
-
-.fuselage {
+.vehicleBody {
   border-right: 5px solid #d8d8d8;
   border-left: 5px solid #d8d8d8;
 }
