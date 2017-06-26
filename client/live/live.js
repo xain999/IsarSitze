@@ -11,16 +11,99 @@ onStartLive = function() {
 }
 
 Template.live.helpers({
-    // Find doesn't need server call
-    displaySeatStatus: function() {
-        console.log("client/live/live.js displaySeatStatus() called");
-        dependency.depend();
-        console.log(SeatsInfo.find(searchCriteria));
-        return SeatsInfo.find(searchCriteria);
-    },
     getVehicles: function() {
         return TransportVehicles.find({});
+    },
+    seatDetails: function(){
+      // return Session.get('seatLayout');
+      var vehiclesRasp= SeatsInfo.find(Session.get('searchCriteriaz')).fetch();
+
+      var totalSeats=0;
+      for (i=0; i<vehiclesRasp.length; i++){
+           totalSeats=totalSeats+vehiclesRasp[i].seats.length;
+      }
+
+      seatLayout=[]
+      var r=0,c=0;
+      seatLayout[0]=[]
+      for (i=0; i<vehiclesRasp.length; i++){
+        for (j = 0; j < vehiclesRasp[i].seats.length; j++){
+          // if(c < settings.cols)}{}
+          seatLayout[r].push({
+              id: vehiclesRasp[i].raspId,
+              seatid:vehiclesRasp[i].seats[j].id,
+              status:vehiclesRasp[i].seats[j].status,
+              column:c
+          });
+          if(c < settings.cols-1)
+            c++;
+          else if(r < (totalSeats/settings.cols)-1){
+            c=0;
+            r++;
+            seatLayout[r]=[]
+          }
+        }
+      }
+      console.log("returning", seatLayout);
+      if(seatLayout === undefined || seatLayout == null || seatLayout.length <= 0)
+        return {};
+      return seatLayout;
+
+    }, check: function(column){
+      console.log("came to check..");
+      console.log("culmn", column);
+      if(column>settings.cols)
+        return "<ol>";
+      else {
+        return ;
+      }
+    }, isChecked: function(status){
+      if (status === true)
+        return true
+      else {
+        return false;
+      }
     }
+});
+
+Template.seatColumn.helpers({
+  isChecked: function(status){
+    if (status === true)
+      return true
+    else {
+      return false;
+    }
+  }
+//   seatDetails: function(){
+//     // return Session.get('seatLayout');
+//     var vehiclesRasp= SeatsInfo.find(Session.get('searchCriteriaz')).fetch();
+//
+//     var totalSeats=0;
+//     for (i=0; i<vehiclesRasp.length; i++){
+//          totalSeats=totalSeats+vehiclesRasp[i].seats.length;
+//     }
+//
+//     seatLayout=[]
+//     var r=1,c=1;
+//     for (i=0; i<vehiclesRasp.length; i++){
+//       for (j = 0; j < vehiclesRasp[i].seats.length; j++){
+//         seatLayout.push({
+//             id: vehiclesRasp[i].raspId,
+//             seatid:vehiclesRasp[i].seats[j].id,
+//             status:vehiclesRasp[i].seats[j].status,
+//             row:r,
+//             column:c
+//             });
+//         if(c < settings.cols)
+//           c++;
+//         else if(r < (totalSeats/settings.cols)){
+//           c=1;
+//           r++;
+//         }
+//       }
+//     }
+//     return seatLayout;
+//   }
 });
 
 var settings = {
@@ -37,50 +120,36 @@ Template.live.events({
         searchCriteria = {vehicleId: vehicle};
         dependency.changed();
         dependency.depend();
-        var vehiclesRaspberrys= SeatsInfo.find(searchCriteria).fetch();
-        console.log(vehiclesRaspberrys[0]);
-        var totalSeats=0;
-        for (i=0; i<vehiclesRaspberrys.length; i++){
-          totalSeats = totalSeats + vehiclesRaspberrys[i].seats.length;
-        }
-        // console.log("allseats",allSeats);
-         var str = [], seatNo, className, k=0, l=0;
-         str.push('<ol class="cabin fuselage">');
-         for (i = 0; i < (totalSeats/settings.cols); i++) {
-           str.push('<li class= "row ' + settings.rowCssPrefix + i.toString() + '">' +
-                    '<ol class="seats" type="A"' + '>'
-                   );
-             for (j = 0; j < settings.cols; j++) {
-               flag=false;
-               if(vehiclesRaspberrys[k].seats[l] !== undefined){
-                  seatNo=vehiclesRaspberrys[k].raspId + "-" + vehiclesRaspberrys[k].seats[l].id;
-                  seatstatus= vehiclesRaspberrys[k].seats[l].status;
-                  l++;
-                  flag=true;
-                }else if(vehiclesRaspberrys[k+1] !== undefined) {
-                  k++;
-                  l=0;
-                  seatNo=vehiclesRaspberrys[k].raspId + "-" + vehiclesRaspberrys[k].seats[l].id ;
-                  seatstatus= vehiclesRaspberrys[k].seats[l].status;
-                  l++;
-                  flag=true;
-                }
-                 if (flag) {
-                   if(seatstatus){
-                     str.push('<li class="seat">'+
-                   '<input type="checkbox"  id="' + seatNo + '" checked />' +
-                   '<label for="' + seatNo+ '">' + seatNo + '</label>'+
-                   '</li>');
-                 } else {str.push('<li class="seat">'+
-               '<input type="checkbox"  id="' + seatNo + '" />' +
-               '<label for="' + seatNo+ '">' + seatNo + '</label>'+
-               '</li>');}
-               }
-             }
-             str.push('</ol>');
-           }
-           str.push('</ol>');
-          //  console.log("string",str);
-         $('#place').html(str.join(''));
+        var vehiclesRasp= SeatsInfo.find(searchCriteria).fetch();
+        Session.set('searchCriteriaz', searchCriteria);
+
+        // var totalSeats=0;
+        // for (i=0; i<vehiclesRasp.length; i++){
+        //      totalSeats=totalSeats+vehiclesRasp[i].seats.length;
+        // }
+        //
+        // seatLayout=[]
+        // var r=0,c=0;
+        // seatLayout[0]=[]
+        // for (i=0; i<vehiclesRasp.length; i++){
+        //   for (j = 0; j < vehiclesRasp[i].seats.length; j++){
+        //     // if(c < settings.cols)}{}
+        //     seatLayout[r].push({
+        //         id: vehiclesRasp[i].raspId,
+        //         seatid:vehiclesRasp[i].seats[j].id,
+        //         status:vehiclesRasp[i].seats[j].status,
+        //         column:c
+        //     });
+        //     if(c < settings.cols-1)
+        //       c++;
+        //     else if(r < (totalSeats/settings.cols)-1){
+        //       c=0;
+        //       r++;
+        //       seatLayout[r]=[]
+        //     }
+        //   }
+        // }
+        // Session.set("seatLayout", seatLayout);
+        // console.log("seatLayout",seatLayout);
       }
 });

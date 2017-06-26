@@ -22,14 +22,38 @@
 
     <!--Display All Vehicles-->
     <h2>Live Status</h2>
+    <!-- <span>
+      {{#each seatDetails}}
+          {{seatid}} : {{status}}
+    </span> -->
 
     <div class="plane">
       <div id="holder">
-          <ul  id="place">
+          <ul id="place">
+            {{#each item in seatDetails}}
+                {{>seatRow item}}
+            {{/each}}
           </ul>
       </div>
     </div>
     </body>
+</template>
+
+<template name= "seatRow">
+  <li class= "row row--{{this.row}}">
+    <ol class="seats" type="A">
+        {{#each this}}
+          {{>seatColumn}}
+        {{/each}}
+    </ol>
+  </li>
+</template>
+
+<template name= "seatColumn">
+    <li class="seat">
+      <input type="checkbox"  checked="{{isChecked status}}"/>
+      <label for={{seatid}}> {{seatid}} </label>
+    </li>
 </template>
 
 <template name="vehicleSelect">
