@@ -2,7 +2,6 @@
 
 <template name="public">
   <head>
-    <!-- <link rel="stylesheet" href="public.css"> -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>IsarSitze</title>
   </head>
@@ -10,36 +9,10 @@
   <body>
     <h1>Travis<br/> <small> Seat Status </small> </h1>
     <!--Display All Vehicles-->
-
-    <!-- {{> reactiveTable collection=displaySeats showNavigation='never' rowsPerPage=5}} -->
     {{> reactiveTable collection=collection  settings=settings}}
-
-    <!-- <div class="table-responsive">
-      <table class="table table-hover">
-        <tr>
-          <th> Vechicle ID </th>
-          <th> Raspberry ID </th>
-          <th> Seat </th>
-          <th> Status </th>
-          <th> Time </th>
-          <th> URL </th>
-        </tr>
-          {{#each displaySeats}}
-              {{> seatDisplay}}
-          {{/each}}
-      </table>
-    </div> -->
-
   </body>
 </template>
 
-<!-- <template name="seatDisplay">
-    <tr>
-      <td> {{vehicleId}} </td>
-      <td> {{raspId}} </td>
-      <td> {{seatId}} </td>
-      <td> {{#if seatStatus}} Occupied {{else}} Free {{/if}} </td>
-      <td> {{createdAt}} </td>
-      <td> {{url}} </td>
-    </tr>
-</template> -->
+<template name="seatStatus">
+  {{#if seatStatus}} Occupied {{else}} Free {{/if}}
+</template>

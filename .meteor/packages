@@ -27,3 +27,5 @@ aslagle:reactive-table
 templates:tabs
 session
 accounts-ui
+momentjs:moment
+
