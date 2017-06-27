@@ -148,7 +148,7 @@ Template.viewVehicleTemplate.events({
     }
 });
 
-Template.adminTabTemplate.events({
+Template.admin.events({
     'click #logout' (event) {
         Meteor.logout();
     }
