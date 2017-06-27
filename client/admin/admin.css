@@ -130,3 +130,34 @@ body {
     color: white;
     border-color: #777;
 }
+
+.custom-add-vehicle {
+    padding: 2rem;
+    border: solid;
+    border-width: 0.5px;
+    border-color: #999;
+}
+
+.custom-add-vehicle label,
+.custom-update-vehicle label {
+    font-weight: 100;
+    margin-right: 16px;
+}
+
+.margin-bottom-16 {
+    margin-bottom: 16px !important;
+}
+
+.margin-right-16 {
+    margin-right: 16px;
+}
+
+.position-absolute {
+    position: absolute;
+}
+
+.custom-update-vehicle {
+    padding: 2rem;
+    border: solid;
+    border-width: 0.5px;
+}
