@@ -1,27 +1,36 @@
 <template name="live">
   <head>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="./live.css">
     <title>IsarSitze</title>
   </head>
 
-  <body>
-    <h1>Travis </h1>
+    <div class="row custom-header">
+        <img src="images/Travis-Logo-orange.svg" width="220px" height="40px">
+        <h1 class="custom-h1"><small class="custom-sub-head">Live Status</small></h1>
+        </div>
 
     <!--Select Vehicle-->
+  <div class="custom-nav-bar custom-nav-bar-public">
     <form id="vehicles">
       <label> Select Vehicle ID: </label> <br/>
-      <select name="vehicles" id="vehicleSelectID" class="vehicles form-control">
-        <option value="" >Choose Vehicle ID...</option>
-           {{#each getVehicles}}
-           <option value="{{value}}">
-               {{vehicleId}}
-           </option>
-       {{/each}}
-      </select>
+      
+      <div class="dropdown">
+          <button id="vehicleSelectID" name="vehicles" class="btn btn-default dropdown-toggle vehicles form-control custom-choose-vehicle-btn"
+           type="button" data-toggle="dropdown">Choose Vehicle ID...
+          <span class="caret custom-caret"></span>
+          </button>
+          <ul class="dropdown-menu custom-choose-vehicle-drop-down" role="menu" aria-labelledby="menu">
+            {{#each getVehicles}}
+                <li id="vehicleSelectID" class="custom-li" value="{{value}}">
+                    {{vehicleId}}
+                </li>
+            {{/each}}
+          </ul>
+        </div>
     </form>
 
     <!--Display Seat Status-->
-    <h2>Live Status</h2>
     <div class="vehicle">
       <div id="holder">
           <ul id="place">
@@ -33,10 +42,10 @@
           </ul>
       </div>
     </div>
-    </body>
+  </div>
 </template>
 
-<template name= "seatRow">
+<template name="seatRow">
   <li class= "row row--{{this.row}}">
     <ol class="seats" type="A">
         {{#each this}}
@@ -46,7 +55,7 @@
   </li>
 </template>
 
-<template name= "seatColumn">
+<template name="seatColumn">
     <li class="seat">
       <input type="checkbox"  checked="{{isChecked status}}"/>
       <label for={{seatid}}> {{seatNumber}} </label>

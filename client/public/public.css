@@ -1,21 +1,35 @@
-table, th, td {
+.custom-nav-bar-public {
+    padding-left: 2rem;
+    padding-right: 2rem;
+    padding-top: 1rem !important;
+}
+
+table,
+th,
+td {
     border: 1px solid black;
     border-collapse: collapse;
 }
-th, td {
+
+th,
+td {
     padding: 5px;
 }
+
 tr:nth-child(even) {
     background-color: #eee;
 }
+
 tr:nth-child(odd) {
     background-color: #fff;
 }
+
 th {
     text-align: left;
     color: white;
     background-color: black;
 }
+
 table {
     border-spacing: 5px;
     background-color: #f1f1c1;

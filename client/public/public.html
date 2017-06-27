@@ -1,17 +1,20 @@
-
-
 <template name="public">
   <head>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>IsarSitze</title>
   </head>
 
-  <body>
-    <h1>Travis<br/> <small> Seat Status </small> </h1>
+  <div class="row custom-header">
+        <img src="images/Travis-Logo-orange.svg" width="220px" height="40px">
+        <h1 class="custom-h1"><small class="custom-sub-head"> Seat Status </small></h1>
+        </div>
     <!--Display All Vehicles-->
+    <div class="custom-nav-bar custom-nav-bar-public">
     {{> reactiveTable collection=collection  settings=settings}}
-  </body>
+    </div>
 </template>
+
 
 <template name="seatStatus">
   {{#if seatStatus}} Occupied {{else}} Free {{/if}}
