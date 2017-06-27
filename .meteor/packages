@@ -19,7 +19,6 @@ ecmascript@0.6.3              # Enable ECMAScript2015+ syntax in app code
 shell-server@0.2.3            # Server-side component of the `meteor shell` command
 
 iron:router
-accounts-ui
 accounts-password
 useraccounts:iron-routing
 twbs:bootstrap
@@ -27,3 +26,4 @@ tejasmanohar:editable-table
 aslagle:reactive-table
 templates:tabs
 session
+accounts-ui

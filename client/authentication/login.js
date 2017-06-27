@@ -1,5 +1,3 @@
-
-Template.fullPageAtForm.rendered = function()
-{
+Template.fullPageAtForm.rendered = function() {
     Accounts._loginButtonsSession.set('dropdownVisible', true);
 };

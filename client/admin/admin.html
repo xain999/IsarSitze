@@ -1,47 +1,49 @@
-<template name= "admin">
+<template name="admin">
     <head>
+      <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Travis - Admin Panel</title>
     </head>
-    <body>
-        <h1>Travis <br/> <small> Vehicles Information </small> </h1>
+      <div class="row custom-header">
+        <img src="images/Travis-Logo-orange.svg" width="220px" height="40px">
+        <h1 class="custom-h1"><small class="custom-sub-head"> Vehicles Information </small></h1>
+        </div>
         {{>adminTabTemplate}}
-    </body>
 </template>
 
 
 <template name="adminTabTemplate">
+  <div class="custom-nav-bar">
   {{#basicTabs name="" tabs=tabs}}
 
     {{#tabContent slug="addvechicle"}}
-      <h2>Add Vehicle</h2>
       {{>addVehicleTemplate}}
     {{/tabContent}}
 
     {{#tabContent slug="updatevehicle"}}
-      <h2>View Vehicle</h2>
       {{>viewVehicleTemplate}}
     {{/tabContent}}
 
   {{/basicTabs}}
+  </div>
 </template>
 
 <template name="viewVehicleTemplate">
-
-  <form class="form-inline">
-    <div class="form-group">
-      <button type="button" class="btn btn-primary" id="removeAllVehicles">Remove All Vehicles</button>
-      <label for= "removeAllVehicles">Note: Raspberries will be deleted along with the transport information</label>
-    </div>
-  </form>
-
   {{> reactiveTable collection=collection fields=fields settings=settings}}
 
   {{#if showEditVehicleDiv}}
     {{>updateVehicleTemplate}}
   {{/if}}
 
-  <br/> <button type="button" class="btn btn-primary" id="logout">Logout</button><br/>
+  <form class="form-inline padding-top-10">
+    <div class="form-group">
+      <button type="button" class="btn custom-btn-primary" id="removeAllVehicles">Remove All Vehicles</button>
+        <p class="padding-top-10">Note: Raspberries will be deleted along with the transport information
+          </p>
+    </div>
+  </form>
+
+  <br/> <button type="button" class="btn custom-btn-primary custom-log-out-button" id="logout">Logout</button><br/>
 </template>
 
 <template name="addVehicleTemplate">
@@ -49,7 +51,7 @@
     {{>addVehicleIdTemplate}}
     {{>addVehicleTypeTemplate}}
     {{>addRaspberryDetailsTemplate}}
-    <button type="submit" class="btn btn-primary" id="addVehicle"> Add </button>
+    <button type="submit" class="btn custom-btn-primary" id="addVehicle"> Add </button>
   </form>
 </template>
 
@@ -87,10 +89,10 @@
               </li>
             {{/each}}
         </div>
-        <button type="button" class="btn btn-primary" id="updateRaspberryButton">Add Another Raspberry</button>
+        <button type="button" class="btn custom-btn-primary" id="updateRaspberryButton">Add Another Raspberry</button>
     </form>
 
-    <button type="submit" class="btn btn-primary" id="updateVehicle"> Update </button>
+    <button type="submit" class="btn custom-btn-primary" id="updateVehicle"> Update </button>
   </form>
 </template>
 
@@ -122,7 +124,7 @@
       <div id="addVehicleDiv" name="addVehicleDiv" class="form-group">
           {{>addRaspberryTemplate}}
       </div>
-      <button type="button" class="btn btn-primary" id="addRaspberryButton">Add Another Raspberry</button>
+      <button type="button" class="btn custom-btn-primary" id="addRaspberryButton">Add Another Raspberry</button>
   </form>
 </template>
 
