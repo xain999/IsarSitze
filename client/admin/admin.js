@@ -135,26 +135,27 @@ Template.updateVehicleTemplate.helpers({
 });
 
 Template.viewVehicleTemplate.events({
-            'click .reactive-table tbody tr': function(event) {
-                event.preventDefault();
-                var post = this;
-                if (event.target.className == "deletebtn") {
-                    Meteor.call('transportVehicles.remove', post.vehicleId);
-                }
-                if (event.target.className == "editbtn") {
-                    Session.set('showEditVehicle', true);
-                    Session.set('getVehicleDetails', post);
-                }
-            });
+    'click .reactive-table tbody tr': function(event) {
+        event.preventDefault();
+        var post = this;
+        if (event.target.className == "deletebtn") {
+            Meteor.call('transportVehicles.remove', post.vehicleId);
+        }
+        if (event.target.className == "editbtn") {
+            Session.set('showEditVehicle', true);
+            Session.set('getVehicleDetails', post);
+        }
+    }
+});
 
-        Template.adminTabTemplate.events({
-            'click #logout' (event) {
-                Meteor.logout();
-            }
-        });
+Template.adminTabTemplate.events({
+    'click #logout' (event) {
+        Meteor.logout();
+    }
+});
 
-        Template.adminTabTemplate.events({
-            'click #removeAllVehicles' (event) {
-                Meteor.call('transportVehicles.removeAll');
-            }
-        });
+Template.adminTabTemplate.events({
+    'click #removeAllVehicles' (event) {
+        Meteor.call('transportVehicles.removeAll');
+    }
+});
