@@ -25,7 +25,7 @@ Template.viewVehicleTemplate.helpers({
             fields: [
                 { key: 'vehicleId', label: 'Vehicle ID', sortOrder: 0, sortDirection: 'descending' },
                 { key: 'type', label: 'Type' },
-                { key: 'raspberryIds', label: 'Raspberry IDs' },
+                { key: 'raspberryIds', label: 'Raspberry IDs', fn: function(value, object, key) { var res = value[0]; for (var i = 1; i < value.length; i++) { res = res + " || " + value[i]; } return res; } },
                 { key: 'delete', label: 'Delete', fn: function() { return new Spacebars.SafeString('<button type="button" class="deletebtn">Delete</button>') } },
                 { key: 'edit', label: 'Edit', fn: function() { return new Spacebars.SafeString('<button type="button" class="editbtn">Edit</button>') } }
             ],

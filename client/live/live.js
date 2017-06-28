@@ -11,7 +11,7 @@ onStartLive = function() {
 }
 
 // settings for seatLayout
-var settings = { cols: 4 };
+var settings = { cols: 4, rowSpace: 2, colSpace: 2 };
 
 Template.live.helpers({
     getVehicles: function() {
@@ -29,7 +29,9 @@ Template.live.helpers({
 
         seatLayout = []
         var r = 0,
-            c = 0;
+            c = 0,
+            rSpace = 0;
+        cSpace = 0;
         seatLayout[0] = []
         seatNumber = 1
         for (i = 0; i < raspInVehicles.length; i++) {
@@ -37,18 +39,37 @@ Template.live.helpers({
                 seatLayout[r].push({
                     seatid: raspInVehicles[i].seats[j].id,
                     status: raspInVehicles[i].seats[j].status,
-                    seatNumber: seatNumber
+                    seatNumber: seatNumber,
+                    isSeat: true
                 });
                 seatNumber++;
-                if (c < settings.cols - 1)
+                if (c < settings.cols - 1) {
                     c++;
-                else if (r < (totalSeats / settings.cols) - 1) {
+                    cSpace++;
+
+                    if (cSpace == settings.colSpace) {
+                        cSpace = 0;
+                        seatLayout[r].push({ isSeat: false });
+                    }
+                } else {
+                    rSpace++;
+                    if (rSpace == settings.rowSpace) {
+                        rSpace = 0;
+                        seatLayout[r + 1] = [];
+                        for (let i of seatLayout[r]) {
+                            seatLayout[r + 1].push({ isSeat: false });
+                        }
+                        r++;
+                    }
+
                     c = 0;
+                    cSpace = 0;
                     r++;
                     seatLayout[r] = []
                 }
             }
         }
+
         return seatLayout;
     }
 });
@@ -62,11 +83,15 @@ Template.seatColumn.helpers({
 });
 
 Template.live.events({
+
     'click #vehicleSelectID': function(event) {
         event.preventDefault();
         vehicle = event.target.innerText;
         $('#vehicleSelectID').text(vehicle);
         $('#vehicleSelectID').append('<span class = "caret custom-caret"/>');
+        if (vehicle.indexOf("Choose") === -1) {
+            $('.vehicle').css('display', 'block');
+        }
         searchCriteria = { vehicleId: vehicle };
         dependency.changed();
         Session.set('searchCriteriaz', searchCriteria);

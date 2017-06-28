@@ -68,10 +68,15 @@ body {
 }
 
 .custom-btn-primary {
-    color: #fff;
+    color: #fff !important;
     background-color: rgb(243, 146, 0);
     border-color: rgb(243, 146, 0);
     opacity: 0.95;
+}
+
+.custom-btn-primary:hover {
+    color: #fff !important;
+    opacity: 1;
 }
 
 .custom-nav-bar .btn-default {

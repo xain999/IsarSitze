@@ -31,23 +31,86 @@
     </form>
 
     <!--Display Seat Status-->
-    <div class="vehicle">
+    <div  class="vehicle">
       <div id="holder">
-          <ul id="place">
-            <ol class="vehicleBody">
+          <div class="vehicle-body">
+            <table id="place">
+              {{#each item in seatDetails}}
+                  {{>seatRow item}}
+              {{/each}}
+            </table>
+        </div>
+      </div>
+
+        <div class="row">
+          <div class="col-md-5">
+            </div>
+          <!--free seat-->
+          <div class="col-md-1">
+            <div class="col-md-12 info">
+              <img class="info-seat" src="images/sitz_frei.png" width="40px" height="30px">
+            </div>
+          <div class="col-md-12 info">
+            <small>Free</small>
+          </div>
+          </div>
+
+          <!--occupied seat-->
+          <div class="col-md-1">
+            <div class="col-md-12 info">
+              <img class="info-seat" src="images/sitz_besetzt.png" width="40px" height="30px">
+            </div>
+          <div class="col-md-12 info">
+            <small>Occupied</small>
+          </div>
+          </div>
+          <div class="col-md-5">
+            </div>
+        </div>
+
+    </div>
+  </div>
+</template>
+
+<template name="seatRow">
+    <tr class="seats">
+        {{#each this}}
+          {{>seatColumn}}
+        {{/each}}
+    </tr>
+</template>
+
+<template name="seatColumn">
+  {{#if isSeat}}
+    <td class="seat">
+      {{#if status}}
+        <img src="images/sitz_besetzt.png" width="60px" height="50px">
+      {{else}}
+        <img src="images/sitz_frei.png" width="60px" height="50px">
+      {{/if}}
+      <!--<input type="checkbox"  checked="{{isChecked status}}"/>-->
+      <!--<label for={{seatid}}> {{seatNumber}} </label>-->
+    </td>
+  {{else}}
+    <td class="seat passage"></td>
+  {{/if}}
+</template>
+
+<!--<div class="vehicle">
+      <div id="holder">
+          <ol id="place">
             {{#each item in seatDetails}}
                 {{>seatRow item}}
             {{/each}}
-            </ol>
-          </ul>
+          </ol>
       </div>
     </div>
   </div>
 </template>
 
 <template name="seatRow">
-  <li class= "row row--{{this.row}}">
-    <ol class="seats" type="A">
+  <li class= "row">
+    <ol class="seats">
         {{#each this}}
           {{>seatColumn}}
         {{/each}}
@@ -60,7 +123,7 @@
       <input type="checkbox"  checked="{{isChecked status}}"/>
       <label for={{seatid}}> {{seatNumber}} </label>
     </li>
-</template>
+</template>-->
 
 <template name="vehicleSelect">
   <select name="vehicles" id="vehicleSelectID" class="vehicles" value={{vehicleId}}> {{vehicleId}} </select><br>
