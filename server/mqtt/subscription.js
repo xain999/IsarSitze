@@ -29,29 +29,29 @@ startMQTT = function() {
     //for deployment
     if (DEPLOY) {
         //start Mqtt connection, global instance
-        mqttClient  = mqtt.connect('mqtts://mqtt.travis-mobility.com:1883');
+        mqttClient = mqtt.connect('mqtts://mqtt.travis-mobility.com:1883');
     } else {
-        mqttClient  = mqtt.connect('mqtt://localhost');
+        mqttClient = mqtt.connect('mqtt://localhost');
     }
 
     // 
-    mqttClient.on('connect', function () {
+    mqttClient.on('connect', function() {
         Fiber(function() {
             result = TransportVehicles.find().forEach(function(element) {
-                
+
                 element['raspberryIds'].forEach(function(rasp) {
                     subscribeToMQTT(rasp, element["vehicleId"]);
                 }, this);
             });
         }).run();
-        
+
         console.log("Client ist connected.");
     });
 
     console.log("App Started");
 
     //Saving the Data on arrival
-    mqttClient.on('message', function (subscribedTopic, rawMessage) {
+    mqttClient.on('message', function(subscribedTopic, rawMessage) {
 
         message = JSON.parse(rawMessage.toString());
 
@@ -63,7 +63,7 @@ startMQTT = function() {
 
         console.log("Subscription: " + subscribedTopic);
         console.log("Seat: " + seatId + '\t' + seatStatus);
-        console.log ('RaspId: ' + raspId);
+        console.log('RaspId: ' + raspId);
 
         Fiber(function() {
             query = { id: raspId, belongsTo: vehicleId, pwd: pwd };

@@ -13,7 +13,7 @@ from pymongo import MongoClient
 WEB_ADDRESS = 'http://localhost:3000'
 MQTT_ADDRESS = 'localhost'
 MONGO_ADDRESS = 'mongodb://127.0.0.1:3001/meteor'
-DEPLOY = True
+DEPLOY = False
 
 if DEPLOY:
     WEB_ADDRESS = 'http://live.travis-mobility.com'
@@ -133,6 +133,7 @@ while True:
             resp = raspberries[url]
             seat = seats[url][random.randint(0, len(seats[url]) - 1)]
             seatStatus[seat] = not seatStatus[seat]
+            print "changing status: " + urls[url] + " " + str(seat)
             changeSeatStatus(resp, seat, urls[url], seatStatus[seat])
             time.sleep(timeDuration)
             choice = choice - 1

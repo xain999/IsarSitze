@@ -6,6 +6,7 @@ import { ReactiveVar } from 'meteor/reactive-var';
 // import './live/live.js';
 
 import './main.html';
+import './main.css';
 
 console.log("client/main.js called");
 
