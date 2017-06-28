@@ -11,6 +11,14 @@ import paho.mqtt.client as mqtt
 from pymongo import MongoClient
 
 WEB_ADDRESS = 'http://localhost:3000'
+MQTT_ADDRESS = 'localhost'
+MONGO_ADDRESS = 'mongodb://127.0.0.1:3001/meteor'
+DEPLOY = False
+
+if DEPLOY:
+    WEB_ADDRESS = 'http://live.travis-mobility.com'
+    MQTT_ADDRESS = 'mqtt.travis-mobility.com'
+    MONGO_ADDRESS = 'mongodb://travis:thisiszain@mongo.travis-mobility.com:27017/travis'
 
 """
 The callback for when the client receives a CONNACK response from the server.
@@ -64,14 +72,19 @@ mqttClient = mqtt.Client()
 mqttClient.on_connect = onConnect
 mqttClient.on_message = onMessage
 
-mqttClient.connect('localhost')
+mqttClient.connect(MQTT_ADDRESS)
 #mqtt.loop_start()
 
-mongoClient = MongoClient('mongodb://127.0.0.1:3001/meteor')
+mongoClient = MongoClient(MONGO_ADDRESS)
 
 print (mongoClient.database_names())
+
 VehiclesDB = mongoClient.meteor.transportVehicles
 RaspberriesDB = mongoClient.meteor.raspberries
+
+if DEPLOY:
+    VehiclesDB = mongoClient.travis.transportVehicles
+    RaspberriesDB = mongoClient.travis.raspberries
 
 urls = []
 raspberries = []
@@ -120,6 +133,7 @@ while True:
             resp = raspberries[url]
             seat = seats[url][random.randint(0, len(seats[url]) - 1)]
             seatStatus[seat] = not seatStatus[seat]
+            print "changing status: " + urls[url] + " " + str(seat)
             changeSeatStatus(resp, seat, urls[url], seatStatus[seat])
             time.sleep(timeDuration)
             choice = choice - 1
