@@ -1,0 +1,92 @@
+html {
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    height: inherit;
+}
+
+.custom-row {
+    margin-right: -15px;
+    margin-left: -15px;
+    height: inherit;
+}
+
+.custom-login {
+    height: inherit;
+    display: flex;
+    align-items: center;
+    z-index: 100;
+}
+
+.custom-login #login-email-label {
+    color: white;
+}
+
+.custom-login #login-password-label {
+    color: white;
+}
+
+.custom-login .background-orange {
+    height: inherit;
+    width: 100%;
+    position: absolute;
+    background: rgb(209, 132, 14);
+    opacity: 0.25;
+}
+
+.custom-login #login-buttons .login-close-text {
+    float: left;
+    position: relative;
+    padding-bottom: 8px;
+    display: none;
+}
+
+.custom-login #login-buttons #forgot-password-link {
+    display: none;
+}
+
+.custom-login #login-sign-in-link {
+    display: none;
+}
+
+.custom-login #login-dropdown-list {
+    position: absolute;
+    top: -6rem;
+    left: 4rem;
+    background: black;
+    opacity: 0.75;
+}
+
+.custom-login #login-buttons .login-button,
+.accounts-dialog .login-button {
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+    padding: 4px 8px;
+    font-size: 80%;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    text-align: center;
+    color: #fff;
+    background: rgb(243, 146, 0);
+    border: 1px solid rgb(243, 146, 0);
+    border-radius: 4px;
+}
+
+.custom-background {
+    height: inherit;
+    background-image: url(images/bg.jpg);
+    opacity: 0.85;
+    top: 0;
+    position: relative;
+    top: -1rem;
+}
+
+.padding-top-10 {
+    padding-top: 10px;
+}

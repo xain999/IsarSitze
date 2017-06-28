@@ -1,63 +1,130 @@
-
 <template name="live">
   <head>
-    <!--<link rel="stylesheet" href="live.css">-->
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="./live.css">
     <title>IsarSitze</title>
   </head>
 
-  <body>
-    <h1>Welcome to IsarSitze!</h1>
+    <div class="row custom-header">
+        <img src="images/Travis-Logo-orange.svg" width="220px" height="40px">
+        <h1 class="custom-h1"><small class="custom-sub-head">Live Status</small></h1>
+        </div>
 
+    <!--Select Vehicle-->
+  <div class="custom-nav-bar custom-nav-bar-public">
     <form id="vehicles">
-      <!--<input type="radio" name="vehicles" value="All" checked> All<br>-->
-      <label> Select Vehicle: </label> <br/>
-      {{#each getVehicles}}
-        {{> vehicleRadio}}
-      {{/each}}
+      <label> Select Vehicle ID: </label> <br/>
+      
+      <div class="dropdown">
+          <button id="vehicleSelectID" name="vehicles" class="btn btn-default dropdown-toggle vehicles form-control custom-choose-vehicle-btn"
+           type="button" data-toggle="dropdown">Choose Vehicle ID...
+          <span class="caret custom-caret"></span>
+          </button>
+          <ul class="dropdown-menu custom-choose-vehicle-drop-down" role="menu" aria-labelledby="menu">
+            {{#each getVehicles}}
+                <li id="vehicleSelectID" class="custom-li" value="{{value}}">
+                    {{vehicleId}}
+                </li>
+            {{/each}}
+          </ul>
+        </div>
     </form>
 
-    <!--<form id="rasp">
+    <!--Display Seat Status-->
+    <div  class="vehicle">
+      <div id="holder">
+          <div class="vehicle-body">
+            <table id="place">
+              {{#each item in seatDetails}}
+                  {{>seatRow item}}
+              {{/each}}
+            </table>
+        </div>
+      </div>
 
-    </form>-->
+        <div class="row">
+          <div class="col-md-5">
+            </div>
+          <!--free seat-->
+          <div class="col-md-1">
+            <div class="col-md-12 info">
+              <img class="info-seat" src="images/sitz_frei.png" width="40px" height="30px">
+            </div>
+          <div class="col-md-12 info">
+            <small>Free</small>
+          </div>
+          </div>
 
-    <!--Display All Vehicles-->
-    <h2>Live Status - Display</h2>
-    <table>
-      <tr>
-        <th> seat </th>
-        <th> status </th>
-      </tr>
-        {{#each displaySeatStatus}}
-            {{#each seats}}
-                {{> seatStatus}}
-            {{/each}}
-        {{/each}}
-    </table>
+          <!--occupied seat-->
+          <div class="col-md-1">
+            <div class="col-md-12 info">
+              <img class="info-seat" src="images/sitz_besetzt.png" width="40px" height="30px">
+            </div>
+          <div class="col-md-12 info">
+            <small>Occupied</small>
+          </div>
+          </div>
+          <div class="col-md-5">
+            </div>
+        </div>
 
-  </body>
+    </div>
+  </div>
 </template>
 
-<template name="seatStatus">
-    <tr>
-      <td> {{id}} </td>
-      <td> {{#if status}} Occupied {{else}} Free {{/if}} </td>
+<template name="seatRow">
+    <tr class="seats">
+        {{#each this}}
+          {{>seatColumn}}
+        {{/each}}
     </tr>
 </template>
 
-<template name="vehicleRadio">
-    <input type="radio" name="vehicles" class="vehicles" value={{vehicleId}}> {{vehicleId}} <br>
+<template name="seatColumn">
+  {{#if isSeat}}
+    <td class="seat">
+      {{#if status}}
+        <img src="images/sitz_besetzt.png" width="60px" height="50px">
+      {{else}}
+        <img src="images/sitz_frei.png" width="60px" height="50px">
+      {{/if}}
+      <!--<input type="checkbox"  checked="{{isChecked status}}"/>-->
+      <!--<label for={{seatid}}> {{seatNumber}} </label>-->
+    </td>
+  {{else}}
+    <td class="seat passage"></td>
+  {{/if}}
 </template>
 
-<!--<template name="rasp">
-    <label> Select Raspberry: </label> <br/>
-    <input type="radio" name="rasp" class="rasp" value="All" checked> All<br>
-    {{#each getRasps}}
-        {{> raspRadio}}
-    {{/each}}
+<!--<div class="vehicle">
+      <div id="holder">
+          <ol id="place">
+            {{#each item in seatDetails}}
+                {{>seatRow item}}
+            {{/each}}
+          </ol>
+      </div>
+    </div>
+  </div>
 </template>
 
-<template name="raspRadio">
-    <input type="radio" name="rasp" class="rasp" value={{raspId}}> {{raspId}} <br>
+<template name="seatRow">
+  <li class= "row">
+    <ol class="seats">
+        {{#each this}}
+          {{>seatColumn}}
+        {{/each}}
+    </ol>
+  </li>
 </template>
 
-UI.dynamic template=myTemplate-->
+<template name="seatColumn">
+    <li class="seat">
+      <input type="checkbox"  checked="{{isChecked status}}"/>
+      <label for={{seatid}}> {{seatNumber}} </label>
+    </li>
+</template>-->
+
+<template name="vehicleSelect">
+  <select name="vehicles" id="vehicleSelectID" class="vehicles" value={{vehicleId}}> {{vehicleId}} </select><br>
+</template>

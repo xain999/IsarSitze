@@ -4,7 +4,7 @@ import { TransportVehicles, Raspberries, SeatsData, SeatsInfo } from '../../data
 Fiber = Npm.require('fibers');
 
 // Turn this Flag off in debuggin if needed
-const USE_MQTT = true;
+const DEPLOY = true;
 
 // Can be moved to a universal place if multiple accesses required
 Fiber = Npm.require('fibers');
@@ -24,32 +24,34 @@ unsubscribeToMQTT = function(name, belongsTo) {
 }
 
 startMQTT = function() {
+    mqtt = require('mqtt');
 
-    //for debugging
-    if (USE_MQTT) {
+    //for deployment
+    if (DEPLOY) {
         //start Mqtt connection, global instance
-        mqtt = require('mqtt');
-        mqttClient  = mqtt.connect('mqtt://localhost');
+        mqttClient = mqtt.connect('mqtts://mqtt.travis-mobility.com:1883');
+    } else {
+        mqttClient = mqtt.connect('mqtt://localhost');
     }
 
     // 
-    mqttClient.on('connect', function () {
+    mqttClient.on('connect', function() {
         Fiber(function() {
             result = TransportVehicles.find().forEach(function(element) {
-                
+
                 element['raspberryIds'].forEach(function(rasp) {
                     subscribeToMQTT(rasp, element["vehicleId"]);
                 }, this);
             });
         }).run();
-        
+
         console.log("Client ist connected.");
     });
 
     console.log("App Started");
 
     //Saving the Data on arrival
-    mqttClient.on('message', function (subscribedTopic, rawMessage) {
+    mqttClient.on('message', function(subscribedTopic, rawMessage) {
 
         message = JSON.parse(rawMessage.toString());
 
@@ -61,7 +63,7 @@ startMQTT = function() {
 
         console.log("Subscription: " + subscribedTopic);
         console.log("Seat: " + seatId + '\t' + seatStatus);
-        console.log ('RaspId: ' + raspId);
+        console.log('RaspId: ' + raspId);
 
         Fiber(function() {
             query = { id: raspId, belongsTo: vehicleId, pwd: pwd };

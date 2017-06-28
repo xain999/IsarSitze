@@ -1,87 +1,155 @@
-<template name= "admin">
+<template name="admin">
     <head>
-        <title>IsarSitze - Admin Panel</title>
+      <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Travis - Admin Panel</title>
     </head>
-
-    <body>
-        <h1>Welcome to IsarSitze - Admin Panel!</h1>
-        
-        <!--Display All Vehicles-->
-        <h2>TransportVehicles- Display</h2>
-        <table>
-            <tr>
-                <th> VechicleId </th>
-                <th> Type </th>
-                <th> RasberryIds </th>
-            </tr>
-            {{#each vehicles}}
-                {{> vehicle}}
-            {{/each}}
-        </table>
-
-        <!--Delete All Vehicles-->
-        <h2>TransportVehicles- Remove All Vehicles</h2>
-        <p> Note: Raspberries will be deleted along with the transport </p>
-        <input type="button" value="Remove All Vehicles" id="removeAllVehicles"/>
-
-        <!--Delete Specific Vehicles-->
-        <h2>TransportVehicles- Remove Specific Vehicle</h2>
-        <p> Note: Raspberries will be deleted along with the transport </p>
-        <form class="deleteSpecificVehicleForm">
-            <b> Enter Vehicle ID </b>
-            <input type="text" name="vehicleId" placeholder="Vehicle ID"/>
-            <input type="submit" value="Remove this Vehicles"/>
-        </form>
-
-        <!--Add/Update Vehicle-->
-        <h2>TransportVehicles- Add/Update Vehicle</h2>
-        <form class="addVehicle">
-            <b> Vehicle ID </b>
-            <input type="text" name="vehicleId" placeholder="Add Vehicle ID"/> 
-            <input type="submit" id="updateVehicle" value="Update"><br/>
-            <!--TODO: ADD ENUMERATION-->
-            <br/> <b> Choose Vechicle Type:</b> <br/>
-            <ul>
-                <li> <input type="radio" name="type" value="bus"> bus </li>
-                <li> <input type="radio" name="type" value="train"> train </li>
-                <li> <input type="radio" name="type" value="tram"> tram </li>
-            </ul>
-
-            <b> Add Raspberry ID that are installed in the vehicle</b> <br/> <br/>
-            <div id="addVehicleDiv" name="addVehicleDiv">
-                {{>addRaspberryTemplate}}
-            </div>
-            <input type="button" id="addRaspberryButton" value="Add raspberry"><br/>                         
-
-            <input type="submit" id="addVehicle" value="Add"/>
-        </form>
-
-        <br/>
-
-        <button type="button" id="logout">
-            Logout
-        </button> 
-        <br/>
-
-    </body>
+      <div class="row custom-header">
+        <img src="images/Travis-Logo-orange.svg" width="220px" height="40px">
+        <h1 class="custom-h1"><small class="custom-sub-head"> Vehicle Information </small></h1>
+        </div>
+        {{>adminTabTemplate}}
+<br/> <button type="button" class="btn custom-btn-primary custom-log-out-button" id="logout">Logout</button><br/>
 </template>
 
-<template name="vehicle">
-    <tr>
-        <td> {{vehicleId}} </td>
-        <td> {{type}} </td>
-        <td> [ 
-            {{#each raspberryIds}}
-                {{this}}
+
+<template name="adminTabTemplate">
+  <div class="custom-nav-bar">
+  {{#basicTabs name="" tabs=tabs}}
+
+    {{#tabContent slug="addvechicle"}}
+      {{>addVehicleTemplate}}
+    {{/tabContent}}
+
+    {{#tabContent slug="updatevehicle"}}
+      {{>viewVehicleTemplate}}
+    {{/tabContent}}
+
+  {{/basicTabs}}
+  </div>
+</template>
+
+<template name="viewVehicleTemplate">
+  {{> reactiveTable collection=collection fields=fields settings=settings}}
+
+  {{#if showEditVehicleDiv}}
+    {{>updateVehicleTemplate}}
+  {{/if}}
+
+  <form class="form-inline padding-top-10">
+    <div class="form-group">
+      <button type="button" class="btn custom-btn-primary" id="removeAllVehicles">Remove All Vehicles</button>
+        <p class="padding-top-10">Note: Raspberries will be deleted along with the transport information
+          </p>
+    </div>
+  </form>
+</template>
+
+<template name="addVehicleTemplate">
+  <form class="addVehicle form-inline custom-add-vehicle">
+    {{>addVehicleIdTemplate}}
+    {{>addVehicleTypeTemplate}}
+    {{>addRaspberryDetailsTemplate}}
+    <button type="submit" class="btn custom-btn-primary" id="addVehicle"> Add </button>
+  </form>
+</template>
+
+<template name="updateVehicleTemplate">
+  <form class="updateVehicle form-inline">
+    <div class="custom-update-vehicle">
+    <div class="form-group  margin-bottom-16">
+      <label for="updateVehicleId">Vehicle ID</label>
+      <input type="text" class="form-control" name="updateVehicleId" id="updateVehicleId" placeholder="Add Vehicle ID" value="{{vehicleDetails.vehicleId}}"/>
+    </div>
+    <div class="margin-bottom-16">
+      <label>Vechicle Type: </label>
+      <div class="radio-inline">
+        <label><input type="radio" name="updateType" id="updateBusRadio" value="bus" {{isChecked 'bus'}}>Bus</label>
+      </div>
+      <div class="radio-inline">
+        <label><input type="radio" name="updateType" id="updateTrainRadio" value="train" {{isChecked 'train'}}>Train</label>
+      </div>
+      <div class="radio-inline">
+        <label><input type="radio" name="updateType" id="updateTramRadio" value="tram" {{isChecked 'tram'}}>Tram</label>
+      </div>
+    </div>
+    <label for="updateRaspberryButton" class= "margin-bottom-16"> Add Raspberry ID that are installed in the vehicle</label>
+    <form class="form-inline margin-bottom-16">
+        <div id="updateVehicleDiv" name="updateVehicleDiv" class="form-group">
+            {{#each ras.raspberryIds}}
+              <ul class="updateRaspberryData">
+                <div class="form-group">
+                  <label for="updateId">Raspberry ID</label>
+                  <input type="text" class="form-control margin-right-16" name="updateRaspberryId" id="updateId" placeholder="Raspberry ID"  value="{{this}}"/>
+                </div>
+                <div class="form-group">
+                  <label for="updatePwd">Raspberry Password</label>
+                  <input type="text" class="form-control  margin-right-16" name="updateRaspberryPwd" id="updatePwd" placeholder="Raspberry Password" value="{{this}}"/>
+                </div>
+              </ul>
             {{/each}}
-            ]
-        </td>
-    </tr>
+        </div>
+        <button type="button" class="btn custom-btn-primary position-absolute" id="updateRaspberryButton">Add Another Raspberry</button>
+    </form>
+    <button type="submit" class="btn custom-btn-primary" id="updateVehicle"> Update </button>
+    </div>
+  </form>
+</template>
+
+<template name="addVehicleIdTemplate">
+  <div class="form-group margin-bottom-16">
+    <label for="addVehicleId">Vehicle ID</label>
+    <input type="text" class="form-control" name="vehicleId" id="addVehicleId" placeholder="Add Vehicle ID"/>
+  </div>
+</template>
+
+<template name="addVehicleTypeTemplate">
+  <div class="margin-bottom-16">
+    <label>Vechicle Type: </label>
+    <div class="radio-inline">
+      <label><input type="radio" name="type" id="busRadio" value="bus">Bus</label>
+    </div>
+    <div class="radio-inline">
+      <label><input type="radio" name="type" id="trainRadio" value="train">Train</label>
+    </div>
+    <div class="radio-inline">
+      <label><input type="radio" name="type" id="tramRadio" value="tram">Tram</label>
+    </div>
+  </div>
+</template>
+
+<template name="addRaspberryDetailsTemplate">
+  <label for="addRaspberryButton" class="margin-bottom-16"> Add Raspberry ID that are installed in the vehicle</label>
+  <form class="form-inline margin-bottom-16">
+      <div id="addVehicleDiv" name="addVehicleDiv" class="form-group">
+          {{>addRaspberryTemplate}}
+      </div>
+      <button type="button" class="btn custom-btn-primary position-absolute" id="addRaspberryButton">Add Another Raspberry</button>
+  </form>
 </template>
 
 <template name="addRaspberryTemplate">
-    <li class="raspberryData">
-        <input type="text" name="raspberryId" id="id" placeholder="Raspberry ID"/>
-        <input type="password" name="raspberryPwd" id="pwd" placeholder="Raspberry Password"/>
-    </li>
+    <ul class="raspberryData">
+      <div class="form-group">
+        <label for="id">Raspberry ID</label>
+        <input type="text" class="form-control margin-right-16" name="raspberryId" id="id" placeholder="Raspberry ID"  value="{{vehicleDetails.vehicleId}}"/>
+      </div>
+      <div class="form-group">
+        <label for="pwd">Raspberry Password</label>
+        <input type="password" class="form-control margin-right-16" name="raspberryPwd" id="pwd" placeholder="Raspberry Password"/>
+      </div>
+    </ul>
+</template>
+
+<template name="updateRaspberryTemplate">
+  <ul class="updateRaspberryData">
+    <div class="form-group">
+      <label for="updateId">Raspberry ID</label>
+      <input type="text" class="form-control margin-right-16" name="updateRaspberryId" id="updateId" placeholder="Raspberry ID"  value="{{this}}"/>
+    </div>
+    <div class="form-group">
+      <label for="updatePwd">Raspberry Password</label>
+      <input type="text" class="form-control margin-right-16" name="updateRaspberryPwd" id="updatePwd" placeholder="Raspberry Password" value="{{this}}"/>
+    </div>
+  </ul>
 </template>
