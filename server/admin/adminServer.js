@@ -42,13 +42,9 @@ Meteor.methods({
         check(type, String);
         check(raspberryIds, [{ id: String, pwd: String }]);
 
-        console.log("dfdfg", vehicleId, type, raspberryIds);
-        console.log("length", raspberryIds.length);
-        console.log("id to fetch", originalVec);
         var raspData = Raspberries.find({ belongsTo: originalVec }).fetch();
-        console.log("fetch raspData", raspData);
 
-        var seatsData = SeatsInfo.find({ vehicleId: vehicleId }).fetch();
+        var seatsData = SeatsInfo.find({ vehicleId: originalVec }).fetch();
 
         for (i = 0; i < raspberryIds.length; i++) {
             item = {
@@ -56,7 +52,6 @@ Meteor.methods({
                 belongsTo: vehicleId,
                 pwd: raspberryIds[i].pwd
             };
-            console.log("raspdata", raspData[i]);
 
             if (seatsData[i] != undefined) {
                 let newSeatRasp = { vehicleId: vehicleId, raspId: raspberryIds[i].id, seats: seatsData[i].seats };
@@ -64,7 +59,6 @@ Meteor.methods({
             }
             if (raspData[i] == undefined) {
                 var p = Raspberries.insert(item);
-                console.log(p);
             } else {
                 Raspberries.update({ _id: raspData[i]._id }, { $set: item });
             }
