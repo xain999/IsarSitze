@@ -5,6 +5,8 @@ import "./admin.html";
 
 var raspListView = [];
 
+document.title = "Travis Mobility";
+
 onStartAdmin = function() {
     console.log("client/admin/admin.js onStartAdmin() called");
 }
