@@ -25,11 +25,15 @@ if (Meteor.isServer) {
         return SeatsData.find();
     });
 
-    let administrators = [
+    let administrators = [{
+            name: { first: 'Fabian', last: 'Gruss' },
+            email: 'fabian_gruss@yahoo.de',
+            password: 'isarsitzeIsTravisNow.'
+        },
         {
-            name: { first: 'Admin', last: 'McAdmin' },
-            email: 'admin@admin.com',
-            password: 'password'
+            name: { first: 'Fabian', last: 'Gruss' },
+            email: 'gruss@travis-mobility.com',
+            password: 'travisSince2017.'
         }
     ];
     createUsers(administrators);
