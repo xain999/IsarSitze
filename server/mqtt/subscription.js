@@ -4,7 +4,7 @@ import { TransportVehicles, Raspberries, SeatsData, SeatsInfo } from '../../data
 Fiber = Npm.require('fibers');
 
 // Turn this Flag off in debuggin if needed
-const DEPLOY = true;
+const DEPLOY = false;
 
 // Can be moved to a universal place if multiple accesses required
 Fiber = Npm.require('fibers');

@@ -413,6 +413,8 @@ def main(argv):
 				if checkPacketType('01'):
 					parsedData = parseData(serialData)
 					changeSeatStatus(mqttClient, parsedData['seatId'], parsedData['seatStatus'])
+			except KeyboardInterrupt:
+				exit(1)
 			except:
 				print "got an error!"
 
