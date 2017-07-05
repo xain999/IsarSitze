@@ -62,7 +62,7 @@ $ nohup python raspScript.py /dev/USB0tty --configure &
 * run mqttMosquitto in background using:
 ```
 #!/usr/bin/sh
-$ mosquitto -d -c /usr/local/etc/mosquitto/mosquitto.conf
+$ mosquitto -d -c /etc/mosquitto/mosquitto.conf
 ```
 * run meteor:
 ```
