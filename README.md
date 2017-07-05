@@ -72,7 +72,7 @@ $ ssh -i {sshKey}
 $ unzip bundle.zip
 $ cd bundle
 $ (cd programs/server && sudo npm install)
-$ export MONGO_URL=''mongodb://travis:thisiszain@mongo.travis-mobility.com:27017/travis'
+$ export MONGO_URL='mongodb://travis:thisiszain@mongo.travis-mobility.com:27017/travis'
 $ export PORT=3000
 $ export ROOT_URL='http://live.travis-mobility.com'
 $ export MAIL_URL='{smtp://user:password@mailhost:port/}' NOT NECESSARY
