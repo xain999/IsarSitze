@@ -36,16 +36,16 @@ In case the code is to run locally, set:
 2. DEPLOY=false in *{root}/server/mqtt/subscription.js*
 
 ## Raspberry Configuration ##
-1. copy or scp 'raspScript.py', 'listDevices.sh' and 'GeoTrust Global CA.pem' onto raspberry
-2. 'GeoTrust Global CA.pem' should be in path or in the current directory when running the 'raspScript.py'.
-3. Edit the 'raspScript.py' and set the variables
-4. 'listDevices.sh' can be used to find the name of the signal receiver that is passed as an argument to the 'raspScript.py'
-5. Run 'raspScript.py' in configure mode using:
+* copy or scp 'raspScript.py', 'listDevices.sh' and 'GeoTrust Global CA.pem' onto raspberry
+* 'GeoTrust Global CA.pem' should be in path or in the current directory when running the 'raspScript.py'.
+* Edit the 'raspScript.py' and set the variables
+* 'listDevices.sh' can be used to find the name of the signal receiver that is passed as an argument to the 'raspScript.py'
+* Run 'raspScript.py' in configure mode using:
 ```
 #!usr/bin/sh
 $ python raspScript.py /dev/ttyUSB0 --configure
 ```
-6. Run 'raspScript.py' using:
+* Run 'raspScript.py' using:
 ```
 #!usr/bin/sh
 $ python raspScript.py /dev/ttyUSB0
@@ -57,14 +57,14 @@ $ nohup python raspScript.py /dev/USB0tty --configure &
 ```
 
 # Deployment instructions #
-1. Launch all three instance images, namely mqtt, meteor, mongoDB
-2. MongoDB will automatically start on startup.
-3. run mqttMosquitto in background using:
+* Launch all three instance images, namely mqtt, meteor, mongoDB
+* MongoDB will automatically start on startup.
+* run mqttMosquitto in background using:
 ```
 #!/usr/bin/sh
 $ mosquitto -d -c /usr/local/etc/mosquitto/mosquitto.conf
 ```
-4. run meteor:
+* run meteor:
 ```
 #!/usr/bin/sh
 $ scp -i {sshKey} bundle.zip ec2-user@{machine_ip}
@@ -78,7 +78,7 @@ $ export ROOT_URL='http://live.travis-mobility.com'
 $ export MAIL_URL='{smtp://user:password@mailhost:port/}' NOT NECESSARY
 $ sudo -E pm2 start main.js -n "Travis"
 ```
-5. run https-proxy on port 443.
+* run https-proxy on port 443.
 
 ## Security ##
 1. The connection between *user/admin* and *meteor* is over SSL using certificates
@@ -97,5 +97,5 @@ $ sudo -E pm2 start main.js -n "Travis"
 
 * Repo owner: *Fabian Gruß* fabian_gruss@yahoo.de
 * Other community or team contact
-1. *Zain Ul-Abideen* ZuAbideen@outlook.com
-2. *Hania Syed* hania.syed@hotmail.com
+* *Zain Ul-Abideen* ZuAbideen@outlook.com
+* *Hania Syed* hania.syed@hotmail.com
