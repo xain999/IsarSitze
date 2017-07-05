@@ -5,12 +5,24 @@ This ReadMe contains basic information about how to run this project.
 ### What is this repository for? ###
 
 * This repository contains most of the code base for Travis Mobility. It is developed using meteor. Apart from that certain scripts are written in bash and python
-* version 0.2
+* current version: 0.2.4
 * https://live.travis-mobility.com
 
 ### How do I get set up? ###
 
-* Summary of set up
+* run MQTT Mosquitto:
+```
+#!usr/bin/sh
+$ cd scripts/mqttMosquitto
+$ ./server.sh
+```
+in case of port occupied error:
+```
+$ ./clearPort.sh
+$ kill -9 {pid returned by above script}
+```
+
+
 * Configuration
 * Dependencies
 * Database configuration
