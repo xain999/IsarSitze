@@ -5,19 +5,13 @@ import { TransportVehicles, Raspberries, SeatsInfo } from '../../database/collec
 Meteor.methods({
     /////////// TransportVehicles Functions \\\\\\\\\\\\
 
-    'transportVehicles.getAll'() {
+    'transportVehicles.getAll' () {
         return TransportVehicles.find({});
     },
-    'transportVehicles.insert'(vehicleId, type, raspberryIds) {
+    'transportVehicles.insert' (vehicleId, type, raspberryIds) {
         check(vehicleId, String);
         check(type, String);
-        check(raspberryIds, [ { id: String, pwd: String } ]);
-
-        // TODO: UPDATE AFTER ADDING SECURITY
-        // Make sure the user is logged in before inserting a task
-        // if (! this.userId) {
-        //   throw new Meteor.Error('not-authorized');
-        // }
+        check(raspberryIds, [{ id: String, pwd: String }]);
 
         for (i = 0; i < raspberryIds.length; i++) {
             item = {
@@ -42,68 +36,58 @@ Meteor.methods({
     },
 
 
-  'transportVehicles.update'(vehicleId, type, raspberryIds, _id, originalVec) {
-    console.log("comes to transportVehicles.update .. adminserver")
-      check(vehicleId, String);
-      check(type, String);
-      check(raspberryIds, [ { id: String, pwd: String } ]);
+    'transportVehicles.update' (vehicleId, type, raspberryIds, _id, originalVec) {
+        console.log("comes to transportVehicles.update .. adminserver")
+        check(vehicleId, String);
+        check(type, String);
+        check(raspberryIds, [{ id: String, pwd: String }]);
 
-      // TODO: UPDATE AFTER ADDING SECURITY
-      // Make sure the user is logged in before inserting a task
-      // if (! this.userId) {
-      //   throw new Meteor.Error('not-authorized');
-      // }
-      console.log("dfdfg", vehicleId, type, raspberryIds);
-      console.log("length",raspberryIds.length);
-      console.log("id to fetch", originalVec);
-      var raspData = Raspberries.find({belongsTo: originalVec}).fetch();
-      console.log("fetch raspData", raspData);
+        var raspData = Raspberries.find({ belongsTo: originalVec }).fetch();
 
-      for (i = 0; i < raspberryIds.length; i++) {
-          item = {
-              id: raspberryIds[i].id,
-              belongsTo: vehicleId,
-              pwd: raspberryIds[i].pwd
-          };
-          console.log("raspdata", raspData[i]);
-          if(raspData[i] == undefined){
-            var p = Raspberries.insert(item);
-            console.log(p);
+        var seatsData = SeatsInfo.find({ vehicleId: originalVec }).fetch();
+
+        for (i = 0; i < raspberryIds.length; i++) {
+            item = {
+                id: raspberryIds[i].id,
+                belongsTo: vehicleId,
+                pwd: raspberryIds[i].pwd
+            };
+
+            if (seatsData[i] != undefined) {
+                let newSeatRasp = { vehicleId: vehicleId, raspId: raspberryIds[i].id, seats: seatsData[i].seats };
+                SeatsInfo.update({ _id: seatsData[i]._id }, { $set: newSeatRasp });
+            }
+            if (raspData[i] == undefined) {
+                var p = Raspberries.insert(item);
+            } else {
+                Raspberries.update({ _id: raspData[i]._id }, { $set: item });
+            }
             raspberryIds[i] = raspberryIds[i].id;
-
-            subscribeToMQTT(raspberryIds[i].id, vehicleId);}
-          else
-            {Raspberries.update( {_id: raspData[i]._id},
-            {$set: item});
-            raspberryIds[i] = raspberryIds[i].id;
-
-          }
-      }
-      TransportVehicles.update(
-          {_id: _id},
-          { $set: { vehicleId: vehicleId, type: type, raspberryIds: raspberryIds, createdAt: new Date()}
-          }
-    );
-    console.log("completed")
+            subscribeToMQTT(raspberryIds[i], vehicleId);
+        }
+        TransportVehicles.update({ _id: _id }, {
+            $set: { vehicleId: vehicleId, type: type, raspberryIds: raspberryIds, createdAt: new Date() }
+        });
+        console.log("completed")
     },
 
 
-    'transportVehicles.removeAll'() {
+    'transportVehicles.removeAll' () {
         //TODO: UPDATE AFTER ADDING SECURITY
         TransportVehicles.remove({});
         Raspberries.remove({});
         SeatsInfo.remove({});
     },
-    'transportVehicles.remove'(vehicleId){
+    'transportVehicles.remove' (vehicleId) {
 
         // unsubscribing
-        raspberries =  Raspberries.find({ belongsTo: vehicleId }).fetch();
+        raspberries = Raspberries.find({ belongsTo: vehicleId }).fetch();
         for (i = 0; i < raspberries.length; i++) {
             unsubscribeToMQTT(raspberries[i].id, raspberries[i].belongsTo);
         }
 
         TransportVehicles.remove({ vehicleId: vehicleId });
         Raspberries.remove({ belongsTo: vehicleId });
-        SeatsInfo.remove({vehicleId: vehicleId});
+        SeatsInfo.remove({ vehicleId: vehicleId });
     }
 });
